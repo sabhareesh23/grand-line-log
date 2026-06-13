@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#071e38"/>
+<title>Grand Line Log — Hamburg</title>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=IM+Fell+English:ital@0;1&family=Special+Elite&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --p:#F4EAD4;--ps:#C8B89A;--ink:#1a0a00;--inkl:#3d200a;
+  --red:#D92424;--redd:#a81818;--yel:#FAC014;--gold:#C9860A;
+  --goldl:#F5C842;--ocean:#0D3B6E;--deep:#071e38;--mid:#1a5898;
+  --wood:#6B3A1F;--sb:#8B6914;--green:#1a7a3a;--purple:#5B2D8E;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Special Elite',cursive;
+  background:var(--deep);
+  min-height:100vh;min-height:100dvh;
+  color:var(--ink);
+  padding-bottom:env(safe-area-inset-bottom,20px);
+  padding-top:env(safe-area-inset-top,0px);
+  transition:background 0.4s,color 0.4s;
+}
+body.light-mode{background:#d0e8f7;--deep:#d0e8f7;--mid:#5a9fd4;--ocean:#3a7fbe;}
+
+/* ANIMATIONS */
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes haki{0%{box-shadow:0 0 0 0 rgba(249,200,20,0)}30%{box-shadow:0 0 0 12px rgba(249,200,20,.7),0 0 30px rgba(249,200,20,.4)}100%{box-shadow:0 0 0 0 rgba(249,200,20,0)}}
+@keyframes coin{0%{transform:scale(0) rotateY(0);opacity:1}60%{transform:scale(1.4) rotateY(360deg);opacity:1}100%{transform:scale(0) rotateY(720deg) translateY(-40px);opacity:0}}
+@keyframes goldflash{0%{opacity:0;transform:scaleX(0)}50%{opacity:1;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1.2)}}
+@keyframes bouncein{0%{transform:scale(.5) translateY(20px);opacity:0}70%{transform:scale(1.1) translateY(-4px);opacity:1}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes wantedglow{0%,100%{box-shadow:0 0 8px rgba(201,134,10,.4),inset 0 0 20px rgba(0,0,0,.3)}50%{box-shadow:0 0 20px rgba(201,134,10,.7),inset 0 0 20px rgba(0,0,0,.3)}}
+@keyframes buster{0%,100%{border-color:var(--red);box-shadow:0 0 10px rgba(217,36,36,.5)}50%{border-color:#f44;box-shadow:0 0 25px rgba(217,36,36,.8)}}
+@keyframes sailin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes gear5{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+@keyframes stamina{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+
+/* SCROLL */
+.scroll{background:var(--p);border:3px solid var(--sb);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.5),inset 0 0 30px rgba(139,105,20,.1);position:relative;overflow:hidden;}
+.scroll::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--sb),var(--goldl),var(--sb));}
+.scroll::after{content:'';position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--sb),var(--goldl),var(--sb));}
+
+.app{max-width:430px;margin:0 auto;padding:0 12px 32px;}
+
+/* TOP BAR */
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 0 6px;}
+.top-bar-title{font-family:'Pirata One',cursive;font-size:16px;color:var(--goldl);letter-spacing:2px;}
+.icon-btn{background:none;border:2px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;font-size:18px;padding:6px 10px;min-height:40px;min-width:40px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.icon-btn:active{filter:brightness(.8);}
+
+/* WANTED POSTER */
+.wanted{margin:0 0 14px;background:var(--p);border:4px solid var(--gold);border-radius:8px;padding:0 0 14px;text-align:center;animation:wantedglow 3s ease-in-out infinite;box-shadow:0 6px 24px rgba(0,0,0,.6);position:relative;overflow:hidden;}
+.wbar{background:var(--ink);color:var(--yel);font-family:'Pirata One',cursive;font-size:12px;letter-spacing:5px;padding:6px 12px;}
+.wtitle{font-family:'Pirata One',cursive;font-size:36px;color:var(--ink);line-height:1;padding:6px 12px 2px;}
+.wtitle span{color:var(--red);}
+.avatar{width:88px;height:88px;border-radius:50%;border:4px solid var(--gold);margin:8px auto 6px;display:flex;align-items:center;justify-content:center;background:var(--mid);font-size:42px;animation:floaty 4s ease-in-out infinite;box-shadow:0 0 0 2px var(--sb),0 4px 12px rgba(0,0,0,.4);cursor:pointer;}
+.pname{font-family:'Pirata One',cursive;font-size:20px;color:var(--ink);letter-spacing:2px;}
+.ptitle{font-family:'IM Fell English',serif;font-size:11px;color:var(--inkl);font-style:italic;margin-bottom:6px;}
+.bounty-row{background:var(--ink);margin:6px 12px 0;border-radius:6px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border:2px solid var(--gold);}
+.blabel{color:var(--yel);font-family:'Pirata One',cursive;font-size:11px;letter-spacing:2px;}
+.bamount{font-family:'Pirata One',cursive;font-size:20px;background:linear-gradient(90deg,var(--gold),var(--yel),var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;}
+/* Euro badge */
+.euro-badge{font-family:'Special Elite',cursive;font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+
+/* LOG POSE */
+.logpose{display:flex;gap:6px;margin:0 0 12px;padding:8px 10px;background:var(--deep);border-radius:10px;border:2px solid var(--mid);overflow-x:auto;scrollbar-width:none;justify-content:center;}
+.logpose::-webkit-scrollbar{display:none;}
+.island{flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--mid);border:2px solid var(--mid);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,.5);transition:all .3s;}
+.island.active{background:var(--yel);border-color:var(--gold);color:var(--ink);box-shadow:0 0 12px rgba(250,192,20,.6);transform:scale(1.15);}
+.island.past{background:rgba(201,134,10,.3);border-color:var(--gold);color:var(--goldl);}
+.isle{font-size:13px;line-height:1;}
+.ilabel{font-size:8px;letter-spacing:1px;margin-top:1px;}
+
+/* WEATHER CARD */
+.weather-card{background:linear-gradient(135deg,#0a2040,#0d3b6e);border:2px solid var(--mid);border-radius:12px;padding:14px 16px;margin-bottom:12px;animation:sailin .4s ease;}
+.wth-top{display:flex;align-items:center;justify-content:space-between;}
+.wth-icon{font-size:42px;}
+.wth-right{text-align:right;}
+.wth-temp{font-family:'Pirata One',cursive;font-size:34px;color:#fff;}
+.wth-desc{font-family:'IM Fell English',serif;font-size:12px;color:rgba(255,255,255,.7);font-style:italic;}
+.wth-pirate{font-family:'Pirata One',cursive;font-size:11px;color:var(--yel);margin-top:4px;letter-spacing:1px;}
+.wth-row{display:flex;gap:12px;margin-top:10px;}
+.wth-stat{flex:1;background:rgba(255,255,255,.08);border-radius:8px;padding:6px 8px;text-align:center;}
+.wth-stat-val{font-family:'Pirata One',cursive;font-size:14px;color:var(--goldl);}
+.wth-stat-lbl{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;}
+
+/* TODAY CARD */
+.today-card{background:linear-gradient(135deg,var(--deep),#0a2a50);border:2px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.tc-left{display:flex;flex-direction:column;gap:2px;}
+.tc-label{font-family:'Pirata One',cursive;font-size:11px;color:var(--yel);letter-spacing:3px;}
+.tc-date{font-family:'IM Fell English',serif;font-size:12px;color:rgba(255,255,255,.7);font-style:italic;}
+.tc-count{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;}
+.tc-amt{font-family:'Pirata One',cursive;font-size:28px;background:linear-gradient(90deg,var(--gold),var(--yel),var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;}
+
+/* SECTION */
+.sh{font-family:'Pirata One',cursive;font-size:19px;color:var(--p);display:flex;align-items:center;gap:8px;margin:18px 0 8px;text-shadow:0 2px 4px rgba(0,0,0,.5);}
+.sd{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-bottom:10px;}
+
+/* BUDGET */
+.bc{padding:14px;}
+.bsr{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.bsr label{font-family:'Pirata One',cursive;font-size:12px;color:var(--inkl);white-space:nowrap;}
+.inp,.sel{width:100%;min-height:44px;padding:10px 12px;background:rgba(139,105,20,.15);border:2px solid var(--sb);border-radius:8px;font-family:'Special Elite',cursive;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
+.inp::placeholder{color:var(--ps);font-style:italic;}
+.inp:focus,.sel:focus{border-color:var(--gold);box-shadow:0 0 8px rgba(201,134,10,.4);}
+.sel{cursor:pointer;}
+.sel option{background:var(--p);}
+.bf{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.fr{display:flex;gap:8px;}
+.btnp{min-height:48px;padding:12px 20px;background:linear-gradient(135deg,var(--red),var(--redd));color:var(--p);border:2px solid rgba(255,255,255,.2);border-radius:8px;font-family:'Pirata One',cursive;font-size:15px;letter-spacing:1px;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px rgba(0,0,0,.3);-webkit-tap-highlight-color:transparent;width:100%;}
+.btnp:active{transform:scale(.97);filter:brightness(.9);}
+.btns{min-height:36px;padding:6px 14px;background:var(--wood);color:var(--p);border:2px solid var(--sb);border-radius:6px;font-family:'Pirata One',cursive;font-size:13px;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.btns:active{filter:brightness(.85);}
+.ptbar{margin-bottom:12px;}
+.pth{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.ptl{font-family:'Pirata One',cursive;font-size:13px;color:var(--inkl);}
+.pta{font-family:'Pirata One',cursive;font-size:13px;color:var(--gold);}
+.ptrack{height:18px;background:rgba(139,105,20,.2);border-radius:9px;border:2px solid var(--sb);overflow:hidden;}
+.pfill{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--gold),var(--yel));transition:width .6s cubic-bezier(.34,1.56,.64,1);position:relative;}
+.pfill::after{content:'';position:absolute;top:2px;left:8px;right:8px;height:4px;background:rgba(255,255,255,.35);border-radius:2px;}
+.pfill.danger{background:linear-gradient(90deg,var(--red),#f44);animation:buster 1s ease-in-out infinite;}
+.bcall{display:none;background:var(--red);color:#fff;text-align:center;padding:8px;border-radius:6px;font-family:'Pirata One',cursive;font-size:13px;letter-spacing:1px;margin-bottom:8px;animation:buster 1s ease-in-out infinite;}
+.bcall.show{display:block;}
+.wkn{text-align:center;font-size:11px;color:var(--ps);font-style:italic;margin-top:4px;}
+
+/* RECURRING */
+.recur-item{display:flex;align-items:center;justify-content:space-between;padding:8px 4px;border-bottom:1px dashed var(--ps);}
+.recur-item:last-child{border-bottom:none;}
+.recur-name{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink);}
+.recur-amt{font-family:'Pirata One',cursive;font-size:14px;color:var(--wood);}
+.recur-total{background:var(--ink);border-radius:6px;padding:6px 10px;display:flex;justify-content:space-between;margin-top:6px;}
+.recur-total-lbl{font-family:'Pirata One',cursive;font-size:12px;color:var(--yel);}
+.recur-total-amt{font-family:'Pirata One',cursive;font-size:14px;color:var(--goldl);}
+
+/* DAY TABS */
+.dtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px;}
+.dtabs::-webkit-scrollbar{display:none;}
+.dtab{flex:0 0 auto;padding:5px 12px;min-height:36px;background:rgba(139,105,20,.15);border:2px solid var(--sb);border-radius:20px;font-family:'Pirata One',cursive;font-size:12px;color:var(--inkl);cursor:pointer;white-space:nowrap;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.dtab.active{background:var(--gold);color:var(--ink);}
+
+/* MANIFEST */
+.mtog{width:100%;min-height:44px;padding:10px 14px;background:var(--wood);color:var(--p);border:2px solid var(--sb);border-radius:8px;font-family:'Pirata One',cursive;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.mlist{margin-top:8px;display:none;animation:sailin .3s ease;}
+.mlist.open{display:block;}
+.dgh{display:flex;align-items:center;justify-content:space-between;padding:8px 4px 4px;border-bottom:2px solid var(--sb);margin-bottom:2px;}
+.dgt{font-family:'Pirata One',cursive;font-size:12px;color:var(--inkl);}
+.dgv{font-family:'Pirata One',cursive;font-size:12px;color:var(--gold);}
+.mi{display:flex;align-items:center;justify-content:space-between;padding:9px 4px;border-bottom:1px dashed var(--ps);animation:sailin .3s ease;}
+.mi:last-child{border-bottom:none;}
+.mil{display:flex;flex-direction:column;flex:1;}
+.min{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink);}
+.mic{font-size:11px;color:var(--inkl);font-style:italic;}
+.mia{font-family:'Pirata One',cursive;font-size:14px;color:var(--red);margin-right:6px;}
+.mdel{background:none;border:none;color:var(--ps);font-size:15px;cursor:pointer;padding:4px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
+.mempty{text-align:center;padding:14px;color:var(--ps);font-style:italic;font-size:13px;}
+
+/* MEAL PLANNER */
+.meal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;}
+.meal-slot{background:rgba(139,105,20,.12);border:2px solid var(--sb);border-radius:8px;padding:8px 10px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+.meal-slot.filled{background:rgba(26,122,58,.15);border-color:var(--green);}
+.meal-slot:active{filter:brightness(.9);}
+.meal-label{font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl);letter-spacing:1px;margin-bottom:3px;}
+.meal-name{font-family:'IM Fell English',serif;font-size:13px;color:var(--ink);}
+.meal-cost{font-family:'Pirata One',cursive;font-size:12px;color:var(--gold);}
+.meal-empty{color:var(--ps);font-style:italic;font-size:12px;}
+
+/* STUDY TRACKER */
+.study-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px dashed var(--ps);}
+.study-item:last-child{border-bottom:none;}
+.study-status{width:10px;height:10px;border-radius:50%;flex:0 0 10px;}
+.study-status.urgent{background:var(--red);animation:pulse 1s infinite;}
+.study-status.soon{background:var(--yel);}
+.study-status.ok{background:var(--green);}
+.study-info{flex:1;}
+.study-name{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink);}
+.study-due{font-size:11px;color:var(--inkl);font-style:italic;}
+.study-days{font-family:'Pirata One',cursive;font-size:12px;text-align:right;}
+.study-days.urgent{color:var(--red);}
+.study-days.soon{color:var(--yel);}
+.study-days.ok{color:var(--green);}
+.add-study-form{display:flex;flex-direction:column;gap:8px;padding:10px 12px 12px;}
+
+/* SLEEP */
+.sleep-row{display:flex;align-items:center;gap:10px;padding:12px;}
+.sleep-icon{font-size:36px;}
+.sleep-info{flex:1;}
+.sleep-label{font-family:'Pirata One',cursive;font-size:12px;color:var(--inkl);letter-spacing:1px;}
+.sleep-hours{font-family:'Pirata One',cursive;font-size:28px;color:var(--mid);}
+.haki-bar-wrap{padding:0 12px 12px;}
+.haki-label{font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl);margin-bottom:4px;}
+.haki-track{height:14px;background:rgba(91,45,142,.2);border-radius:7px;border:2px solid var(--purple);overflow:hidden;}
+.haki-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--purple),#9b59b6);transition:width .6s;}
+.sleep-btns{display:flex;gap:6px;padding:0 12px 12px;}
+.sleep-btn{flex:1;min-height:44px;background:rgba(139,105,20,.15);border:2px solid var(--sb);border-radius:8px;font-family:'Pirata One',cursive;font-size:13px;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+.sleep-btn.active{background:var(--mid);border-color:var(--ocean);color:#fff;}
+
+/* WORKOUT */
+.workout-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px dashed var(--ps);}
+.workout-item:last-child{border-bottom:none;}
+.wo-check{width:44px;height:44px;flex:0 0 44px;border-radius:10px;border:3px solid var(--sb);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;-webkit-tap-highlight-color:transparent;}
+.wo-check.done{background:linear-gradient(135deg,var(--green),#1a9f4a);border-color:var(--green);}
+.wo-name{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink);}
+.wo-name.done{text-decoration:line-through;color:var(--ps);}
+.stamina-wrap{padding:4px 12px 12px;}
+.stamina-track{height:16px;background:rgba(26,122,58,.15);border-radius:8px;border:2px solid var(--green);overflow:hidden;}
+.stamina-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#1a7a3a,#2ecc71,#f39c12);background-size:200% 100%;animation:stamina 2s linear infinite;transition:width .6s;}
+
+/* GOALS */
+.goal-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px dashed var(--ps);}
+.goal-item:last-child{border-bottom:none;}
+.goal-check{width:44px;height:44px;flex:0 0 44px;border-radius:50%;border:3px solid var(--sb);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;-webkit-tap-highlight-color:transparent;}
+.goal-check.done{background:linear-gradient(135deg,var(--yel),var(--gold));border-color:var(--gold);animation:haki .6s ease;}
+.goal-info{flex:1;}
+.goal-name{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink);}
+.goal-name.done{text-decoration:line-through;color:var(--ps);}
+.goal-reward{font-size:11px;color:var(--gold);font-family:'Pirata One',cursive;}
+.goal-prog{font-family:'Pirata One',cursive;font-size:13px;color:var(--mid);text-align:right;}
+
+/* ROUTINES */
+.rc{padding:12px 12px 8px;}
+.ri{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--ps);}
+.ri:last-child{border-bottom:none;}
+.rck{width:44px;height:44px;flex:0 0 44px;border-radius:50%;border:3px solid var(--sb);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;-webkit-tap-highlight-color:transparent;}
+.rck.done{background:linear-gradient(135deg,var(--yel),var(--gold));border-color:var(--gold);animation:haki .6s ease;}
+.rck.done::after{content:'✓';color:var(--ink);font-size:17px;font-weight:bold;}
+.rinfo{flex:1;}
+.rname{font-family:'IM Fell English',serif;font-size:15px;color:var(--ink);}
+.rname.done{text-decoration:line-through;color:var(--ps);}
+.rrew{font-size:11px;color:var(--gold);font-family:'Pirata One',cursive;}
+.strow{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--deep);border-radius:8px;margin-top:10px;border:2px solid var(--mid);}
+.stcnt{font-family:'Pirata One',cursive;font-size:26px;color:var(--goldl);margin-left:auto;}
+
+/* HVV — FULL TRAIN SECTION */
+.hvv-card{background:linear-gradient(135deg,#1a0a40,#2d1060);border:2px solid #6a3bc7;border-radius:12px;padding:14px;margin-bottom:12px;}
+.hvv-title{font-family:'Pirata One',cursive;font-size:14px;color:#b39ddb;letter-spacing:2px;margin-bottom:10px;}
+.hvv-line{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(163,128,219,.2);}
+.hvv-line:last-child{border-bottom:none;}
+.hvv-badge{min-width:36px;padding:3px 6px;border-radius:4px;font-family:'Pirata One',cursive;font-size:11px;text-align:center;flex:0 0 auto;}
+.hvv-info{flex:1;}
+.hvv-dest{font-family:'IM Fell English',serif;font-size:13px;color:#e0d0ff;}
+.hvv-time{font-size:10px;color:rgba(255,255,255,.5);}
+.hvv-dep{font-family:'Pirata One',cursive;font-size:16px;color:#f5c842;text-align:right;}
+.hvv-min{font-size:10px;color:rgba(255,255,255,.5);}
+
+/* TRAIN SEARCH TABS */
+.train-tabs{display:flex;gap:0;margin-bottom:12px;border-radius:8px;overflow:hidden;border:2px solid #6a3bc7;}
+.train-tab{flex:1;padding:8px 4px;min-height:40px;background:transparent;border:none;font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;cursor:pointer;letter-spacing:1px;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center;}
+.train-tab.active{background:#6a3bc7;color:#fff;}
+
+/* SEARCH PANEL */
+.train-search-panel{margin-bottom:10px;}
+.train-inp{width:100%;min-height:44px;padding:10px 12px;background:rgba(106,59,199,.15);border:2px solid #6a3bc7;border-radius:8px;font-family:'Special Elite',cursive;font-size:14px;color:#e0d0ff;outline:none;margin-bottom:8px;-webkit-appearance:none;}
+.train-inp::placeholder{color:rgba(179,157,219,.5);font-style:italic;}
+.train-inp:focus{border-color:#b39ddb;box-shadow:0 0 8px rgba(179,157,219,.3);}
+.train-search-row{display:flex;gap:8px;}
+.train-btn{flex:1;min-height:44px;padding:10px;background:linear-gradient(135deg,#6a3bc7,#4a2a97);color:#fff;border:none;border-radius:8px;font-family:'Pirata One',cursive;font-size:13px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+.train-btn:active{filter:brightness(.85);}
+.train-btn-secondary{flex:1;min-height:44px;padding:10px;background:transparent;color:#b39ddb;border:2px solid #6a3bc7;border-radius:8px;font-family:'Pirata One',cursive;font-size:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.train-btn-secondary:active{filter:brightness(.85);}
+
+/* QUICK STATIONS */
+.quick-stations{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.qs-btn{padding:5px 10px;min-height:34px;background:rgba(106,59,199,.2);border:1px solid #6a3bc7;border-radius:16px;font-family:'Special Elite',cursive;font-size:11px;color:#b39ddb;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+.qs-btn:active{background:#6a3bc7;color:#fff;}
+
+/* LIVE RESULTS */
+.train-results{margin-top:8px;}
+.train-result-item{background:rgba(106,59,199,.1);border:1px solid rgba(106,59,199,.4);border-radius:8px;padding:10px 12px;margin-bottom:6px;animation:sailin .3s ease;}
+.tr-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.tr-line-badge{padding:3px 8px;border-radius:4px;font-family:'Pirata One',cursive;font-size:12px;font-weight:bold;flex:0 0 auto;}
+.tr-direction{font-family:'IM Fell English',serif;font-size:13px;color:#e0d0ff;flex:1;}
+.tr-dep-time{font-family:'Pirata One',cursive;font-size:18px;color:#f5c842;}
+.tr-bottom{display:flex;align-items:center;justify-content:space-between;}
+.tr-platform{font-size:10px;color:rgba(255,255,255,.5);}
+.tr-countdown{font-family:'Pirata One',cursive;font-size:11px;padding:2px 8px;border-radius:10px;}
+.tr-countdown.now{background:var(--green);color:#fff;}
+.tr-countdown.soon{background:var(--gold);color:var(--ink);}
+.tr-countdown.later{background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);}
+.tr-delay{font-size:10px;color:var(--red);margin-left:4px;}
+
+/* IFRAME PANEL */
+.hvv-iframe-wrap{border-radius:8px;overflow:hidden;border:2px solid #6a3bc7;background:#000;position:relative;}
+.hvv-iframe{width:100%;height:420px;border:none;display:block;}
+.iframe-overlay-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0a40,#2d1060);padding:20px;text-align:center;}
+.iframe-overlay-msg p{font-family:'IM Fell English',serif;font-size:13px;color:#b39ddb;margin-bottom:12px;font-style:italic;}
+
+/* LOADING SPINNER */
+.train-loading{text-align:center;padding:16px;font-family:'Pirata One',cursive;font-size:13px;color:#b39ddb;letter-spacing:1px;}
+.spinner{display:inline-block;animation:floaty 1s ease-in-out infinite;font-size:24px;margin-bottom:6px;}
+
+/* DB STATUS BADGE */
+.db-status{display:flex;align-items:center;gap:6px;margin-bottom:10px;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px;}
+.db-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
+.db-dot.offline{background:var(--red);animation:none;}
+.db-status-txt{font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;letter-spacing:1px;}
+
+/* NIGHT MODE */
+body.night .scroll{background:#1a1008;border-color:#5a4010;}
+body.night .scroll::before,body.night .scroll::after{background:linear-gradient(90deg,#5a4010,#c9a020,#5a4010);}
+body.night .inp,body.night .sel{background:rgba(90,64,16,.3);color:#e8d9b5;border-color:#5a4010;}
+body.night .inp::placeholder{color:#6b5030;}
+body.night .weather-card{background:linear-gradient(135deg,#0a0a20,#101040);}
+
+/* COIN POP */
+.cpop{position:fixed;pointer-events:none;font-size:28px;z-index:9999;animation:coin .8s ease forwards;}
+
+/* MODAL */
+.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.mover.open{display:flex;}
+.mbox{background:var(--p);border:4px solid var(--gold);border-radius:12px;padding:18px;width:100%;max-width:340px;animation:bouncein .4s ease;max-height:90vh;overflow-y:auto;}
+.mtit{font-family:'Pirata One',cursive;font-size:20px;color:var(--ink);margin-bottom:12px;text-align:center;}
+.agrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px;}
+.abtn{font-size:26px;padding:5px;background:none;border:2px solid transparent;border-radius:8px;cursor:pointer;text-align:center;min-height:44px;transition:border-color .2s;-webkit-tap-highlight-color:transparent;}
+.abtn.sel{border-color:var(--gold);background:rgba(201,134,10,.2);}
+
+/* MEAL MODAL */
+.meal-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.meal-preset{padding:8px;background:rgba(139,105,20,.1);border:2px solid var(--sb);border-radius:8px;cursor:pointer;text-align:center;font-size:12px;min-height:44px;-webkit-tap-highlight-color:transparent;}
+.meal-preset:active{filter:brightness(.9);}
+
+/* SHIMMER */
+.sflash{position:relative;overflow:hidden;}
+.sflash::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(249,200,20,.5),transparent);animation:goldflash .6s ease forwards;}
+
+/* TOGGLE COLLAPSE */
+.sec-toggle{width:100%;min-height:44px;padding:8px 14px;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);font-family:'Pirata One',cursive;font-size:14px;color:var(--p);cursor:pointer;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;margin-bottom:0;}
+.sec-body{display:block;}
+.sec-body.collapsed{display:none;}
+
+/* EURO TOGGLE */
+.currency-toggle{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.currency-toggle span{font-family:'Pirata One',cursive;font-size:12px;color:#fff;}
+
+.footer{text-align:center;padding:18px 0 6px;color:rgba(255,255,255,.3);font-size:11px;letter-spacing:1px;}
+
+/* ADD ROW */
+.add-row{display:flex;gap:8px;padding:0 12px 12px;}
+
+/* ── SRH CALENDAR ── */
+.cal-upload-zone{margin:12px;border:3px dashed var(--sb);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .3s;background:rgba(139,105,20,.08);-webkit-tap-highlight-color:transparent;}
+.cal-upload-zone.dragover{border-color:var(--gold);background:rgba(201,134,10,.15);}
+.cal-upload-icon{font-size:36px;margin-bottom:8px;}
+.cal-upload-title{font-family:'Pirata One',cursive;font-size:14px;color:var(--inkl);margin-bottom:4px;}
+.cal-upload-sub{font-size:11px;color:var(--ps);font-style:italic;}
+.cal-upload-input{display:none;}
+.cal-loaded-bar{display:flex;align-items:center;justify-content:space-between;background:rgba(26,122,58,.15);border:2px solid var(--green);border-radius:8px;padding:8px 12px;margin:0 12px 10px;}
+.cal-loaded-info{font-family:'Pirata One',cursive;font-size:12px;color:var(--green);}
+.cal-loaded-count{font-size:11px;color:var(--inkl);}
+.cal-tabs{display:flex;gap:0;margin:0 12px 10px;border-radius:8px;overflow:hidden;border:2px solid var(--sb);}
+.cal-tab{flex:1;padding:8px 4px;min-height:38px;background:transparent;border:none;font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl);cursor:pointer;letter-spacing:1px;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center;}
+.cal-tab.active{background:var(--sb);color:var(--p);}
+.cal-event{display:flex;gap:10px;padding:10px 12px;border-bottom:1px dashed var(--ps);animation:sailin .3s ease;}
+.cal-event:last-child{border-bottom:none;}
+.cal-event-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px;margin-top:4px;}
+.cal-event-info{flex:1;}
+.cal-event-title{font-family:'IM Fell English',serif;font-size:14px;color:var(--ink);}
+.cal-event-time{font-size:11px;color:var(--inkl);font-style:italic;margin-top:2px;}
+.cal-event-loc{font-size:11px;color:var(--ps);margin-top:1px;}
+.cal-event-right{text-align:right;}
+.cal-event-day{font-family:'Pirata One',cursive;font-size:12px;color:var(--gold);}
+.cal-event-countdown{font-size:10px;padding:2px 6px;border-radius:8px;margin-top:3px;display:inline-block;}
+.cal-event-countdown.today{background:var(--red);color:#fff;}
+.cal-event-countdown.tomorrow{background:var(--gold);color:var(--ink);}
+.cal-event-countdown.soon{background:rgba(26,88,152,.3);color:var(--mid);}
+.cal-today-header{font-family:'Pirata One',cursive;font-size:13px;color:var(--inkl);padding:8px 12px 4px;border-bottom:2px solid var(--sb);letter-spacing:1px;}
+.cal-empty{text-align:center;padding:20px;color:var(--ps);font-style:italic;font-size:13px;}
+.cal-week-day{font-family:'Pirata One',cursive;font-size:11px;color:var(--gold);padding:6px 12px 2px;letter-spacing:2px;border-top:1px solid var(--ps);margin-top:4px;}
+.cal-week-day:first-child{border-top:none;margin-top:0;}
+/* Upcoming banner strip */
+.cal-next-class{background:linear-gradient(135deg,var(--ocean),var(--deep));border:2px solid var(--mid);border-radius:10px;padding:12px 14px;margin:0 0 12px;display:none;}
+.cal-next-class.show{display:block;}
+.cal-next-label{font-family:'Pirata One',cursive;font-size:10px;color:var(--yel);letter-spacing:3px;margin-bottom:4px;}
+.cal-next-title{font-family:'IM Fell English',serif;font-size:16px;color:#fff;margin-bottom:2px;}
+.cal-next-time{font-size:12px;color:rgba(255,255,255,.6);}
+.cal-next-badge{font-family:'Pirata One',cursive;font-size:13px;color:var(--yel);float:right;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-title">🏴‍☠️ GRAND LINE LOG</div>
+  <div style="display:flex;gap:8px">
+    <button class="currency-toggle" onclick="toggleCurrency()" title="Toggle currency">
+      <span id="currLabel">฿ Berries</span>
+    </button>
+    <button class="icon-btn" onclick="toggleNight()" id="nightBtn">🌙</button>
+  </div>
+</div>
+
+<!-- WANTED POSTER -->
+<div class="wanted">
+  <div class="wbar">⚓ WORLD GOVERNMENT — BOUNTY NOTICE ⚓</div>
+  <div class="wtitle">WAN<span>T</span>ED</div>
+  <div class="avatar" onclick="openProfileModal()"><span id="avDisp">🏴‍☠️</span></div>
+  <div class="pname" id="pName">MONKEY D. LUFFY</div>
+  <div class="ptitle" id="pTitle">Student Pirate — Hamburg Division</div>
+  <div class="bounty-row">
+    <div>
+      <div class="blabel">BOUNTY</div>
+      <div class="bamount" id="bAmt">฿0</div>
+      <div class="euro-badge" id="euroEquiv"></div>
+    </div>
+    <div style="text-align:right">
+      <div class="blabel">STATUS</div>
+      <div style="color:var(--red);font-family:'Pirata One',cursive;font-size:12px" id="pirateStatus">ROOKIE PIRATE</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG POSE -->
+<div class="logpose" id="logpose"></div>
+
+<!-- WEATHER -->
+<div class="weather-card" id="weatherCard">
+  <div class="wth-top">
+    <div>
+      <div style="font-family:'Pirata One',cursive;font-size:11px;color:var(--yel);letter-spacing:2px;">📍 HAMBURG SEAS</div>
+      <div class="wth-pirate" id="wthPirate">Loading weather intel...</div>
+    </div>
+    <div class="wth-right">
+      <div class="wth-icon" id="wthIcon">⏳</div>
+      <div class="wth-temp" id="wthTemp">--°</div>
+      <div class="wth-desc" id="wthDesc">—</div>
+    </div>
+  </div>
+  <div class="wth-row">
+    <div class="wth-stat"><div class="wth-stat-val" id="wthWind">--</div><div class="wth-stat-lbl">WIND</div></div>
+    <div class="wth-stat"><div class="wth-stat-val" id="wthHum">--</div><div class="wth-stat-lbl">HUMIDITY</div></div>
+    <div class="wth-stat"><div class="wth-stat-val" id="wthRain">--</div><div class="wth-stat-lbl">RAIN</div></div>
+  </div>
+</div>
+
+<!-- HVV TRANSIT — 3-IN-1 -->
+<div class="hvv-card">
+  <div class="hvv-title">🚇 HVV NAVIGATION CHART</div>
+
+  <!-- STATUS -->
+  <div class="db-status">
+    <div class="db-dot" id="dbDot"></div>
+    <span class="db-status-txt" id="dbStatusTxt">Connecting to DB API...</span>
+  </div>
+
+  <!-- TABS -->
+  <div class="train-tabs">
+    <button class="train-tab active" onclick="switchTrainTab('live',this)">📡 LIVE BOARD</button>
+    <button class="train-tab" onclick="switchTrainTab('search',this)">🔍 SEARCH</button>
+    <button class="train-tab" onclick="switchTrainTab('planner',this)">🗺️ PLANNER</button>
+  </div>
+
+  <!-- TAB: LIVE BOARD -->
+  <div id="trainTabLive">
+    <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+      <span style="font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;align-self:center">FROM:</span>
+      <div class="quick-stations" id="liveStations" style="margin-bottom:0"></div>
+    </div>
+    <div id="liveBoardResults">
+      <div class="train-loading"><div class="spinner">🚆</div><br>Loading departures...</div>
+    </div>
+    <div style="text-align:center;margin-top:8px">
+      <button class="train-btn-secondary" style="width:100%" onclick="refreshLiveBoard()">🔄 Refresh Departures</button>
+    </div>
+  </div>
+
+  <!-- TAB: SEARCH -->
+  <div id="trainTabSearch" style="display:none">
+    <input class="train-inp" id="trainFrom" type="text" placeholder="🚉 From: e.g. Hamburg Hbf..."/>
+    <input class="train-inp" id="trainTo" type="text" placeholder="🏁 To: e.g. Altona..."/>
+    <div class="train-search-row" style="margin-bottom:8px">
+      <input class="train-inp" id="trainDate" type="date" style="flex:1;margin-bottom:0"/>
+      <input class="train-inp" id="trainTime" type="time" style="flex:1;margin-bottom:0"/>
+    </div>
+    <div style="margin-bottom:8px">
+      <div style="font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;margin-bottom:6px">⚡ QUICK STATIONS:</div>
+      <div class="quick-stations" id="quickStations"></div>
+    </div>
+    <div class="train-search-row">
+      <button class="train-btn" onclick="searchTrains()">⛵ SEARCH ROUTES</button>
+      <button class="train-btn-secondary" onclick="openHVVSearch()">🌐 HVV SITE</button>
+    </div>
+    <div id="searchResults" style="margin-top:10px"></div>
+  </div>
+
+  <!-- TAB: PLANNER (EMBEDDED) -->
+  <div id="trainTabPlanner" style="display:none">
+    <div class="hvv-iframe-wrap">
+      <div class="iframe-overlay-msg" id="plannerOverlay">
+        <div style="font-size:36px;margin-bottom:10px">🗺️</div>
+        <p>Open the HVV Journey Planner in full-screen for the best experience on iPhone.</p>
+        <p style="font-size:11px;margin-bottom:14px">Tap below to launch — it opens in Safari where you can search any route.</p>
+        <button class="train-btn" onclick="openHVVFull()" style="margin-bottom:8px">🚇 OPEN HVV PLANNER</button>
+        <button class="train-btn-secondary" onclick="openDBFull()">🚆 OPEN DB NAVIGATOR</button>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="train-btn-secondary" onclick="window.open('https://www.bahn.de/buchung/fahrplan/suche#sts=true&so=Hamburg&zo=Berlin','_blank')">🚆 HH→Berlin</button>
+      <button class="train-btn-secondary" onclick="window.open('https://www.bahn.de/buchung/fahrplan/suche#sts=true&so=Hamburg&zo=München','_blank')">🚆 HH→München</button>
+      <button class="train-btn-secondary" onclick="window.open('https://hvv.de/de/tickets','_blank')">🎫 HVV Tickets</button>
+      <button class="train-btn-secondary" onclick="window.open('https://www.bahn.de/','_blank')">🌐 DB Website</button>
+    </div>
+  </div>
+</div>
+
+<!-- TODAY SPEND -->
+<div class="today-card">
+  <div class="tc-left">
+    <div class="tc-label">⚡ TODAY'S PLUNDER</div>
+    <div class="tc-date" id="tcDate">—</div>
+    <div class="tc-count" id="tcCount">0 entries</div>
+  </div>
+  <div class="tc-amt" id="tcAmt">฿0</div>
+</div>
+
+<!-- BUSTER CALL -->
+<div class="bcall" id="bcall">⚠️ BUSTER CALL — SPENDING CRITICAL ⚠️</div>
+
+<!-- ═══ SECTION: BUDGET ═══ -->
+<div class="sh"><span>💰</span> Grand Line Budget</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('budgetBody',this)">Weekly Expenses <span>▼</span></button>
+  <div class="sec-body" id="budgetBody">
+    <div class="bc">
+      <div class="bsr">
+        <label>Weekly Limit:</label>
+        <input class="inp" id="budgetInp" type="number" placeholder="Amount" style="flex:1"/>
+        <button class="btns" onclick="setBudget()">⚓ Set</button>
+      </div>
+      <div class="ptbar">
+        <div class="pth"><span class="ptl">🎁 Weekly Used</span><span class="pta" id="chestAmt">฿0/฿0</span></div>
+        <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
+        <div class="wkn">Resets every Monday</div>
+      </div>
+      <div class="bf">
+        <input class="inp" id="eName" type="text" placeholder="Item name (e.g. Döner)..."/>
+        <div class="fr">
+          <input class="inp" id="eAmt" type="number" placeholder="Amount" style="flex:1"/>
+          <select class="sel" id="eCat" style="flex:1.2">
+            <option value="Food/Meat">🍖 Food</option>
+            <option value="Ship Repairs">🚇 Transport</option>
+            <option value="Sake/Cola">☕ Drinks</option>
+            <option value="Gear">📚 Study/Gear</option>
+            <option value="Rent/Bills">🏠 Rent/Bills</option>
+            <option value="Miscellaneous">🗺️ Misc</option>
+          </select>
+        </div>
+        <button class="btnp" id="addExpBtn" onclick="addExpense()">⛵ SET SAIL — LOG EXPENSE</button>
+      </div>
+      <div class="dtabs" id="dtabs"></div>
+      <button class="mtog" onclick="toggleManifest()">
+        <span>📜 Manifest (<span id="mcount">0</span>)</span><span id="mchev">▼</span>
+      </button>
+      <div class="mlist" id="mlist"><div class="mempty" id="mempty">No plunder yet, Captain!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: CREW WAGES (RECURRING) ═══ -->
+<div class="sh"><span>🧾</span> Crew Wages (Recurring)</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('recurBody',this)">Monthly Fixed Costs <span>▼</span></button>
+  <div class="sec-body" id="recurBody">
+    <div style="padding:12px">
+      <div id="recurList"></div>
+      <div class="fr" style="gap:8px;margin-top:10px">
+        <input class="inp" id="recurName" type="text" placeholder="e.g. Spotify..." style="flex:1"/>
+        <input class="inp" id="recurAmt" type="number" placeholder="€/mo" style="flex:0 0 90px"/>
+        <button class="btns" onclick="addRecurring()">+ Add</button>
+      </div>
+      <div class="recur-total" style="margin-top:10px">
+        <span class="recur-total-lbl">MONTHLY TOTAL</span>
+        <span class="recur-total-amt" id="recurTotal">€0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: MEAL PLANNER ═══ -->
+<div class="sh"><span>🍜</span> Crew Mess Hall</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('mealBody',this)">Today's Meal Plan <span>▼</span></button>
+  <div class="sec-body" id="mealBody">
+    <div class="meal-grid" id="mealGrid"></div>
+    <div style="padding:0 12px 12px;text-align:center">
+      <div style="font-family:'Pirata One',cursive;font-size:12px;color:var(--inkl)">Estimated Daily Food Cost: <span id="mealCost" style="color:var(--gold)">฿0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: SRH CALENDAR ═══ -->
+<div class="sh"><span>🎓</span> SRH Timetable</div><div class="sd"></div>
+
+<!-- Next class banner (shows when calendar loaded) -->
+<div class="cal-next-class" id="calNextClass">
+  <div class="cal-next-label">⚡ NEXT CLASS</div>
+  <div class="cal-next-title" id="calNextTitle">—</div>
+  <div class="cal-next-time" id="calNextTime">—</div>
+  <div class="cal-next-badge" id="calNextBadge">—</div>
+</div>
+
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('calBody',this)">SRH Calendar <span>▼</span></button>
+  <div class="sec-body" id="calBody">
+
+    <!-- Upload zone -->
+    <div id="calUploadZone">
+      <div class="cal-upload-zone" onclick="document.getElementById('calFileInput').click()" id="calDropZone">
+        <div class="cal-upload-icon">📅</div>
+        <div class="cal-upload-title">Drop your SRH .ics file here</div>
+        <div class="cal-upload-sub">or tap to choose file from your iPhone</div>
+        <input type="file" class="cal-upload-input" id="calFileInput" accept=".ics,text/calendar" onchange="handleCalFile(this.files[0])"/>
+      </div>
+      <div style="padding:0 12px 12px">
+        <div style="font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl);margin-bottom:8px;text-align:center">HOW TO GET YOUR .ICS FILE:</div>
+        <div style="font-size:12px;color:var(--inkl);line-height:1.8;font-family:'IM Fell English',serif">
+          1. Log in to your SRH student portal<br>
+          2. Go to <b>Timetable / Calendar</b><br>
+          3. Click <b>Export</b> or <b>Download .ics</b><br>
+          4. Send the file to your iPhone<br>
+          5. Come back here and tap above to upload ☝️
+        </div>
+      </div>
+    </div>
+
+    <!-- Loaded state -->
+    <div id="calLoadedState" style="display:none">
+      <div class="cal-loaded-bar">
+        <div>
+          <div class="cal-loaded-info" id="calLoadedInfo">✅ Calendar loaded</div>
+          <div class="cal-loaded-count" id="calLoadedCount">0 events found</div>
+        </div>
+        <button class="btns" onclick="clearCalendar()">🗑️ Clear</button>
+      </div>
+
+      <!-- View tabs -->
+      <div class="cal-tabs">
+        <button class="cal-tab active" onclick="switchCalTab('today',this)">TODAY</button>
+        <button class="cal-tab" onclick="switchCalTab('week',this)">THIS WEEK</button>
+        <button class="cal-tab" onclick="switchCalTab('upcoming',this)">UPCOMING</button>
+        <button class="cal-tab" onclick="switchCalTab('all',this)">ALL</button>
+      </div>
+
+      <div id="calEventList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION: STUDY ═══ -->
+<div class="sh"><span>📚</span> Marine Intel (Studies)</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('studyBody',this)">Assignment Deadlines <span>▼</span></button>
+  <div class="sec-body" id="studyBody">
+    <div id="studyList"></div>
+    <div class="add-study-form">
+      <input class="inp" id="studyName" type="text" placeholder="Subject / Assignment..."/>
+      <div class="fr" style="gap:8px">
+        <input class="inp" id="studyDate" type="date" style="flex:1"/>
+        <button class="btns" onclick="addStudy()">+ Intel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: SLEEP ═══ -->
+<div class="sh"><span>😴</span> Rest & Haki Power</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('sleepBody',this)">Sleep Log <span>▼</span></button>
+  <div class="sec-body" id="sleepBody">
+    <div class="sleep-row">
+      <span class="sleep-icon">🌙</span>
+      <div class="sleep-info">
+        <div class="sleep-label">LAST NIGHT'S REST</div>
+        <div class="sleep-hours" id="sleepHours">-- hrs</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl)">HAKI POWER</div>
+        <div style="font-family:'Pirata One',cursive;font-size:18px;color:var(--purple)" id="hakiPct">--%</div>
+      </div>
+    </div>
+    <div class="haki-bar-wrap">
+      <div class="haki-label">⚡ Haki Level</div>
+      <div class="haki-track"><div class="haki-fill" id="hakiFill" style="width:0%"></div></div>
+    </div>
+    <div class="sleep-btns" id="sleepBtns"></div>
+    <div style="padding:0 12px 10px;font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl);text-align:center" id="sleepMsg">Log your sleep to power up your Haki!</div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: WORKOUT ═══ -->
+<div class="sh"><span>🏋️</span> Training Grounds</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('workoutBody',this)">Workout Log <span>▼</span></button>
+  <div class="sec-body" id="workoutBody">
+    <div id="workoutList"></div>
+    <div class="stamina-wrap">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-family:'Pirata One',cursive;font-size:11px;color:var(--inkl)">⚡ STAMINA BAR (GEAR 2nd)</span>
+        <span style="font-family:'Pirata One',cursive;font-size:11px;color:var(--green)" id="workoutPct">0%</span>
+      </div>
+      <div class="stamina-track"><div class="stamina-fill" id="staminaFill" style="width:0%"></div></div>
+    </div>
+    <div class="add-row">
+      <input class="inp" id="woName" type="text" placeholder="New exercise..." style="flex:1"/>
+      <button class="btns" onclick="addWorkout()">+ Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: WEEKLY GOALS ═══ -->
+<div class="sh"><span>🎯</span> Bounty Missions</div><div class="sd"></div>
+<div class="scroll">
+  <button class="sec-toggle" onclick="toggleSec('goalsBody',this)">Weekly Goals <span>▼</span></button>
+  <div class="sec-body" id="goalsBody">
+    <div id="goalsList"></div>
+    <div class="add-row">
+      <input class="inp" id="goalName" type="text" placeholder="New mission..." style="flex:1"/>
+      <button class="btns" onclick="addGoal()">+ Mission</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: DAILY ROUTINES ═══ -->
+<div class="sh"><span>⚔️</span> Daily Logbook</div><div class="sd"></div>
+<div class="scroll rc">
+  <div id="routineList"></div>
+  <div class="add-row" style="padding:10px 0 0">
+    <input class="inp" id="newRout" type="text" placeholder="New habit..." style="flex:1"/>
+    <button class="btns" onclick="addRoutine()">+ Add</button>
+  </div>
+  <div class="strow">
+    <span style="font-size:26px">🗺️</span>
+    <div>
+      <div style="font-family:'Pirata One',cursive;font-size:12px;color:var(--yel);letter-spacing:1px">Log Pose Streak</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.5)">Islands Charted</div>
+    </div>
+    <div class="stcnt" id="stcnt">0</div>
+  </div>
+</div>
+
+<div class="footer">⚓ Grand Line Log — Hamburg Student Edition ⚓</div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="mover" id="profModal">
+  <div class="mbox">
+    <div class="mtit">⚓ Wanted Poster</div>
+    <div class="agrid" id="agrid"></div>
+    <input class="inp" id="nameInp" type="text" placeholder="Pirate name..." style="margin-bottom:8px"/>
+    <input class="inp" id="titleInp" type="text" placeholder="Title..." style="margin-bottom:12px"/>
+    <button class="btnp" onclick="saveProfile()">🏴‍☠️ Save Poster</button>
+    <button class="btns" style="width:100%;margin-top:8px" onclick="closeMod('profModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- MEAL MODAL -->
+<div class="mover" id="mealModal">
+  <div class="mbox">
+    <div class="mtit" id="mealModalTitle">🍜 Plan Meal</div>
+    <div class="meal-modal-grid" id="mealPresets"></div>
+    <input class="inp" id="mealCustomName" type="text" placeholder="Custom meal name..." style="margin-bottom:8px"/>
+    <input class="inp" id="mealCustomCost" type="number" placeholder="Cost in € (e.g. 3.50)" style="margin-bottom:12px"/>
+    <button class="btnp" onclick="saveMeal()">🍖 Set Sail with this Meal</button>
+    <button class="btns" style="width:100%;margin-top:8px" onclick="closeMod('mealModal')">Cancel</button>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ──────────────────────────────────────────────────────────────
+const AVATARS=['🏴‍☠️','⚓','🗺️','🦜','🐉','☠️','🌊','⚔️','🍖','🦊','🐆','🌋','💀','🎸','🔱'];
+const DAYS=['MON','TUE','WED','THU','FRI','SAT','SUN'];
+const ISLANDS=['🏝️','⛰️','🌋','🗿','🏔️','🌊','☁️'];
+const CAT_EMOJI={'Food/Meat':'🍖','Ship Repairs':'🚇','Sake/Cola':'☕','Gear':'📚','Rent/Bills':'🏠','Miscellaneous':'🗺️'};
+const STATUSES=['ROOKIE PIRATE','WANTED CRIMINAL','SUPERNOVA','WARLORD','YONKO COMMANDER','YONKO','PIRATE KING'];
+const MEAL_SLOTS=['🌅 Breakfast','☀️ Lunch','🌆 Dinner','🌙 Snack'];
+const HAMBURG_MEALS=[
+  {n:'Döner Kebab',c:5.5},{n:'Schnitzel',c:8},{n:'Fischbrötchen',c:4},{n:'Currywurst',c:4.5},
+  {n:'Pasta',c:2},{n:'Rice & Veggies',c:2.5},{n:'Supermarket Meal',c:3},{n:'McDonald\'s',c:7},
+  {n:'Mensa (Uni)',c:3.5},{n:'Homemade Soup',c:1.5},{n:'Bagel',c:3},{n:'Pizza Slice',c:3}
+];
+const DEFAULT_ROUTINES=[
+  {id:'r1',name:'Morning Study Session',done:false},
+  {id:'r2',name:'30 min Walk/Bike',done:false},
+  {id:'r3',name:'Cook at Home',done:false},
+  {id:'r4',name:'Review Notes',done:false},
+];
+const DEFAULT_WORKOUTS=[
+  {id:'w1',name:'Push-ups (3 sets)',done:false},
+  {id:'w2',name:'Cycling / Walk',done:false},
+  {id:'w3',name:'Stretching',done:false},
+];
+const DEFAULT_GOALS=[
+  {id:'g1',name:'Go to library 3x',done:false,reward:30000000},
+  {id:'g2',name:'Cook at home 5 days',done:false,reward:50000000},
+  {id:'g3',name:'No unnecessary spending',done:false,reward:20000000},
+];
+const SLEEP_OPTIONS=[4,5,6,7,8,9,10];
+const EUR_PER_BERRY=0.000001; // 1 Berry = 0.000001 EUR (flavour)
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+const ld=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}};
+const getWK=()=>{const d=new Date(),dy=d.getDay(),df=d.getDate()-dy+(dy===0?-6:1),m=new Date(new Date().setDate(df));return`${m.getFullYear()}-${m.getMonth()}-${m.getDate()}`;};
+const getDK=(dt)=>{const d=dt||new Date();return`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;};
+const fmtDay=(k)=>{const td=getDK(),yd=new Date();yd.setDate(yd.getDate()-1);if(k===td)return'Today';if(k===getDK(yd))return'Yesterday';const p=k.split('-');return new Date(+p[0],+p[1],+p[2]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});};
+const fmtTime=(iso)=>new Date(iso).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+const todayKey=getDK(), thisWeek=getWK();
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let S={
+  pirateName:ld('pirateName','MONKEY D. LUFFY'),
+  pirateTitle:ld('pirateTitle','Student Pirate — Hamburg Division'),
+  avatar:ld('avatar','🏴‍☠️'),
+  bounty:ld('bounty',0),
+  budget:ld('budget',100),
+  showEuro:ld('showEuro',false),
+  nightMode:ld('nightMode',false),
+  weekKey:ld('weekKey',''),
+  expenses:ld('expenses',[]),
+  recurring:ld('recurring',[
+    {id:'rc1',name:'Spotify',amount:10},
+    {id:'rc2',name:'HVV Ticket',amount:45},
+    {id:'rc3',name:'Netflix',amount:8},
+  ]),
+  meals:ld('meals',{0:null,1:null,2:null,3:null}),
+  mealDay:ld('mealDay',''),
+  studyItems:ld('studyItems',[]),
+  sleepHours:ld('sleepHours',null),
+  sleepDay:ld('sleepDay',''),
+  routines:ld('routines',DEFAULT_ROUTINES),
+  routineDay:ld('routineDay',''),
+  workouts:ld('workouts',DEFAULT_WORKOUTS),
+  workoutDay:ld('workoutDay',''),
+  goals:ld('goals',DEFAULT_GOALS),
+  goalWeek:ld('goalWeek',''),
+  streak:ld('streak',0),
+  lastStreakDate:ld('lastStreakDate',''),
+};
+
+// Weekly reset expenses
+if(S.weekKey!==thisWeek){S.weekKey=thisWeek;S.expenses=[];sv('weekKey',thisWeek);sv('expenses',[]);}
+// Weekly reset goals
+if(S.goalWeek!==thisWeek){S.goalWeek=thisWeek;S.goals=DEFAULT_GOALS.map(g=>({...g,done:false}));sv('goalWeek',thisWeek);sv('goals',S.goals);}
+// Daily reset routines
+if(S.routineDay!==todayKey){
+  const allD=S.routineDay!==''&&S.routines.every(r=>r.done);
+  if(allD){const yd=new Date();yd.setDate(yd.getDate()-1);S.streak=getDK(yd)===S.lastStreakDate?S.streak+1:1;S.lastStreakDate=todayKey;}
+  else if(S.routineDay!==''){S.streak=0;}
+  S.routineDay=todayKey;S.routines=S.routines.map(r=>({...r,done:false}));
+  sv('routineDay',todayKey);sv('routines',S.routines);sv('streak',S.streak);sv('lastStreakDate',S.lastStreakDate);
+}
+// Daily reset workouts
+if(S.workoutDay!==todayKey){S.workoutDay=todayKey;S.workouts=S.workouts.map(w=>({...w,done:false}));sv('workoutDay',todayKey);sv('workouts',S.workouts);}
+// Daily reset meals
+if(S.mealDay!==todayKey){S.mealDay=todayKey;S.meals={0:null,1:null,2:null,3:null};sv('mealDay',todayKey);sv('meals',S.meals);}
+// Daily reset sleep
+if(S.sleepDay!==todayKey){S.sleepDay=todayKey;S.sleepHours=null;sv('sleepDay',todayKey);sv('sleepHours',null);}
+
+const persist=()=>{
+  Object.keys(S).forEach(k=>sv(k,S[k]));
+};
+
+// ── NIGHT MODE ────────────────────────────────────────────────────────────
+if(S.nightMode){document.body.classList.add('night');document.getElementById('nightBtn').textContent='☀️';}
+
+function toggleNight(){
+  S.nightMode=!S.nightMode;
+  document.body.classList.toggle('night',S.nightMode);
+  document.getElementById('nightBtn').textContent=S.nightMode?'☀️':'🌙';
+  persist();
+}
+
+// ── CURRENCY ──────────────────────────────────────────────────────────────
+function toggleCurrency(){
+  S.showEuro=!S.showEuro;
+  document.getElementById('currLabel').textContent=S.showEuro?'€ Euro':'฿ Berries';
+  persist();
+  renderAll();
+}
+const fmt=(berries)=>S.showEuro?'€'+(berries*EUR_PER_BERRY*1000000).toFixed(2):'฿'+berries.toLocaleString();
+const fmtEuro=(eur)=>S.showEuro?'฿'+(eur/EUR_PER_BERRY/1000000).toLocaleString():'€'+eur.toFixed(2);
+
+// ── SECTION TOGGLE ────────────────────────────────────────────────────────
+function toggleSec(id,btn){
+  const body=document.getElementById(id);
+  body.classList.toggle('collapsed');
+  const arrow=btn.querySelector('span:last-child');
+  arrow.textContent=body.classList.contains('collapsed')?'▶':'▼';
+}
+
+// ── LOG POSE ──────────────────────────────────────────────────────────────
+function renderLogPose(){
+  const bar=document.getElementById('logpose');
+  const ti=(new Date().getDay()+6)%7;
+  bar.innerHTML=DAYS.map((d,i)=>`<div class="island ${i===ti?'active':i<ti?'past''}">
+    <span class="isle">${ISLANDS[i]}</span><span class="ilabel">${d}</span></div>`).join('');
+}
+
+// ── WEATHER ───────────────────────────────────────────────────────────────
+const WEATHER_ICONS={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'❄️',73:'❄️',75:'❄️',80:'🌧️',81:'🌧️',82:'⛈️',95:'⛈️'};
+const PIRATE_WEATHER={
+  clear:['Clear skies! Perfect day to set sail! ⛵','Sunny seas — Grand Line conditions! 🌊'],
+  clouds:['Hamburg clouds gathering... Log Pose active','Overcast — typical Hamburg weather, Captain'],
+  rain:['⚠️ Stormy seas ahead — bring your raincoat!','Marine weather attack! Stay on course!'],
+  snow:['❄️ Ice Age seas — bundle up, Nakama!','Winter Grand Line — extreme conditions!'],
+  fog:['🌫️ Log Pose spinning — visibility low!','Foggy Hamburg straits — navigate carefully!']
+};
+function getPirateWeather(code){
+  if(code===0||code===1)return PIRATE_WEATHER.clear[Math.floor(Math.random()*2)];
+  if(code<=3)return PIRATE_WEATHER.clouds[Math.floor(Math.random()*2)];
+  if(code<=67)return PIRATE_WEATHER.rain[Math.floor(Math.random()*2)];
+  if(code<=77)return PIRATE_WEATHER.snow[Math.floor(Math.random()*2)];
+  return PIRATE_WEATHER.fog[Math.floor(Math.random()*2)];
+}
+async function fetchWeather(){
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=53.55&longitude=10.00&current=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m&wind_speed_unit=kmh');
+    const d=await r.json();const c=d.current;
+    const code=c.weather_code;
+    document.getElementById('wthIcon').textContent=WEATHER_ICONS[code]||'🌡️';
+    document.getElementById('wthTemp').textContent=Math.round(c.temperature_2m)+'°C';
+    document.getElementById('wthDesc').textContent='Hamburg, Germany';
+    document.getElementById('wthWind').textContent=Math.round(c.wind_speed_10m)+' km/h';
+    document.getElementById('wthHum').textContent=c.relative_humidity_2m+'%';
+    document.getElementById('wthRain').textContent=(c.precipitation_probability||0)+'%';
+    document.getElementById('wthPirate').textContent=getPirateWeather(code);
+  }catch(e){
+    document.getElementById('wthPirate').textContent='⚓ Weather intel unavailable — sail by instinct!';
+    document.getElementById('wthTemp').textContent='??°';
+    document.getElementById('wthIcon').textContent='🌊';
+  }
+}
+
+// ── TRAIN / HVV — 3-IN-1 ─────────────────────────────────────────────────
+const HAMBURG_STATIONS=[
+  {name:'Hamburg Hbf',id:'8002549'},
+  {name:'Altona',id:'8000157'},
+  {name:'Dammtor',id:'8000157'},
+  {name:'Harburg',id:'8000147'},
+  {name:'Bergedorf',id:'8000168'},
+  {name:'Barmbek',id:'8000168'},
+  {name:'Wandsbek',id:'8000168'},
+];
+const LINE_COLORS={
+  'U1':'#006cb7','U2':'#ff0000','U3':'#f5a200','U4':'#00b2a9',
+  'S1':'#00833e','S2':'#00833e','S3':'#7ab51d','S11':'#00833e',
+  'RE':'#f01414','RB':'#f01414','ICE':'#f01414','IC':'#f01414','EC':'#f01414',
+};
+function getLineColor(name){
+  for(const[k,v] of Object.entries(LINE_COLORS)){if(name&&name.startsWith(k))return v;}
+  return '#6a3bc7';
+}
+
+let activeTrainTab='live';
+let activeLiveStation=HAMBURG_STATIONS[0];
+
+function switchTrainTab(tab,btn){
+  activeTrainTab=tab;
+  document.querySelectorAll('.train-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('trainTabLive').style.display=tab==='live'?'block':'none';
+  document.getElementById('trainTabSearch').style.display=tab==='search'?'block':'none';
+  document.getElementById('trainTabPlanner').style.display=tab==='planner'?'block':'none';
+  if(tab==='live')refreshLiveBoard();
+}
+
+// Set default date/time for search
+function initSearchDefaults(){
+  const now=new Date();
+  document.getElementById('trainDate').value=now.toISOString().split('T')[0];
+  document.getElementById('trainTime').value=now.toTimeString().slice(0,5);
+  // Quick station buttons
+  const qs=document.getElementById('quickStations');
+  qs.innerHTML=HAMBURG_STATIONS.map(s=>`<button class="qs-btn" onclick="fillStation('${s.name}')">${s.name}</button>`).join('');
+  // Live station selector
+  const ls=document.getElementById('liveStations');
+  ls.innerHTML=HAMBURG_STATIONS.slice(0,5).map(s=>`<button class="qs-btn${s.id===activeLiveStation.id&&s.name===activeLiveStation.name?' active':''}" 
+    onclick="setLiveStation('${s.name}','${s.id}',this)">${s.name.replace('Hamburg ','')}</button>`).join('');
+}
+
+function fillStation(name){
+  const from=document.getElementById('trainFrom');
+  const to=document.getElementById('trainTo');
+  if(!from.value)from.value=name;
+  else to.value=name;
+}
+
+function setLiveStation(name,id,btn){
+  activeLiveStation={name,id};
+  document.querySelectorAll('#liveStations .qs-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  refreshLiveBoard();
+}
+
+// ── LIVE DEPARTURE BOARD (DB API) ─────────────────────────────────────────
+async function refreshLiveBoard(){
+  const el=document.getElementById('liveBoardResults');
+  el.innerHTML='<div class="train-loading"><div class="spinner">🚆</div><br>Fetching departures...</div>';
+  setDBStatus(true,'Fetching live departures...');
+  try{
+    // Deutsche Bahn open API (v6) — free, no key needed
+    const url=`https://v6.db.transport.rest/stops/${activeLiveStation.id}/departures?duration=60&results=8&language=en`;
+    const res=await fetch(url);
+    if(!res.ok)throw new Error('API error '+res.status);
+    const data=await res.json();
+    const deps=data.departures||[];
+    if(!deps.length){el.innerHTML='<div class="train-loading">No departures found — try another station!</div>';return;}
+    setDBStatus(true,'🟢 Live — DB API connected');
+    el.innerHTML=deps.map(d=>{
+      const line=d.line||{};
+      const color=getLineColor(line.name||'');
+      const planned=new Date(d.plannedWhen||d.when);
+      const actual=new Date(d.when||d.plannedWhen);
+      const delay=d.delay?Math.round(d.delay/60):0;
+      const minsAway=Math.round((actual-new Date())/60000);
+      const countdown=minsAway<=0?'NOW':minsAway===1?'1 min':minsAway+' min';
+      const countdownCls=minsAway<=0?'now':minsAway<=5?'soon':'later';
+      const platform=d.plannedPlatform||d.platform||'';
+      return`<div class="train-result-item">
+        <div class="tr-top">
+          <span class="tr-line-badge" style="background:${color};color:#fff">${line.name||'?'}</span>
+          <span class="tr-direction">${d.direction||'Unknown'}</span>
+          <span class="tr-dep-time">${planned.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}${delay>0?`<span class="tr-delay">+${delay}'</span>`:''}</span>
+        </div>
+        <div class="tr-bottom">
+          <span class="tr-platform">${platform?'Platform '+platform:''} · ${line.mode||''}</span>
+          <span class="tr-countdown ${countdownCls}">${countdown}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){
+    setDBStatus(false,'DB API unavailable — showing estimated times');
+    renderFallbackBoard();
+  }
+}
+
+function renderFallbackBoard(){
+  const el=document.getElementById('liveBoardResults');
+  const now=new Date();
+  const lines=[
+    {name:'U1',color:'#006cb7',dest:'Ohlsdorf / Farmsen',mins:[3,13,23,33]},
+    {name:'S1',color:'#00833e',dest:'Airport / Poppenbüttel',mins:[6,18,30,42]},
+    {name:'U3',color:'#f5a200',dest:'Barmbek → Wandsbek',mins:[8,20,32,44]},
+    {name:'RE7',color:'#f01414',dest:'Flensburg',mins:[12,42]},
+    {name:'S3',color:'#7ab51d',dest:'Stade / Neugraben',mins:[4,16,28,40]},
+  ];
+  el.innerHTML='<div style="font-size:10px;color:#b39ddb;font-family:Pirata One,cursive;margin-bottom:8px;letter-spacing:1px">⚠️ ESTIMATED TIMES — Live API offline</div>'
+  +lines.map(l=>{
+    const next=l.mins[0];
+    const dep=new Date(now.getTime()+next*60000);
+    const minsAway=next;
+    const cls=minsAway<=0?'now':minsAway<=5?'soon':'later';
+    return`<div class="train-result-item">
+      <div class="tr-top">
+        <span class="tr-line-badge" style="background:${l.color};color:#fff">${l.name}</span>
+        <span class="tr-direction">${l.dest}</span>
+        <span class="tr-dep-time">${dep.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+      <div class="tr-bottom">
+        <span class="tr-platform">Est. from ${activeLiveStation.name.replace('Hamburg ','')}</span>
+        <span class="tr-countdown ${cls}">${minsAway<=0?'NOW':minsAway+' min'}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── ROUTE SEARCH ──────────────────────────────────────────────────────────
+async function searchTrains(){
+  const from=document.getElementById('trainFrom').value.trim();
+  const to=document.getElementById('trainTo').value.trim();
+  const date=document.getElementById('trainDate').value;
+  const time=document.getElementById('trainTime').value;
+  if(!from||!to){
+    document.getElementById('searchResults').innerHTML='<div class="train-loading" style="color:var(--red)">⚠️ Enter FROM and TO stations first!</div>';
+    return;
+  }
+  const results=document.getElementById('searchResults');
+  results.innerHTML='<div class="train-loading"><div class="spinner">🔍</div><br>Searching routes...</div>';
+  setDBStatus(true,'Searching routes...');
+  try{
+    // Step 1: resolve station IDs
+    const [fromRes,toRes]=await Promise.all([
+      fetch(`https://v6.db.transport.rest/locations?query=${encodeURIComponent(from)}&results=1`).then(r=>r.json()),
+      fetch(`https://v6.db.transport.rest/locations?query=${encodeURIComponent(to)}&results=1`).then(r=>r.json()),
+    ]);
+    if(!fromRes.length||!toRes.length)throw new Error('Station not found');
+    const fromId=fromRes[0].id, toId=toRes[0].id;
+    const fromName=fromRes[0].name, toName=toRes[0].name;
+    // Step 2: get journeys
+    const dt=date&&time?`${date}T${time}:00`:new Date().toISOString();
+    const jRes=await fetch(`https://v6.db.transport.rest/journeys?from=${fromId}&to=${toId}&departure=${encodeURIComponent(dt)}&results=5&language=en`);
+    const jData=await jRes.json();
+    const journeys=jData.journeys||[];
+    if(!journeys.length)throw new Error('No journeys found');
+    setDBStatus(true,'🟢 Live — Routes found');
+    results.innerHTML=`<div style="font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;margin-bottom:8px">📍 ${fromName} → ${toName}</div>`
+    +journeys.map(j=>{
+      const legs=j.legs||[];
+      const dep=new Date(legs[0]?.plannedDeparture||legs[0]?.departure);
+      const arr=new Date(legs[legs.length-1]?.plannedArrival||legs[legs.length-1]?.arrival);
+      const dur=Math.round((arr-dep)/60000);
+      const changes=legs.filter(l=>l.line).length-1;
+      const lines=legs.filter(l=>l.line).map(l=>l.line?.name).filter(Boolean);
+      const price=j.price?`€${(j.price.amount/100).toFixed(2)}`:'';
+      return`<div class="train-result-item">
+        <div class="tr-top">
+          <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+            ${lines.map(l=>`<span class="tr-line-badge" style="background:${getLineColor(l)};color:#fff">${l}</span>`).join('<span style="color:#b39ddb;font-size:10px;align-self:center">→</span>')}
+          </div>
+          ${price?`<span style="font-family:'Pirata One',cursive;font-size:13px;color:var(--goldl)">${price}</span>`:''}
+        </div>
+        <div class="tr-bottom" style="margin-top:4px">
+          <span style="font-family:'Pirata One',cursive;font-size:13px;color:#f5c842">
+            ${dep.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} → ${arr.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}
+          </span>
+          <span class="tr-platform">${dur} min · ${changes===0?'Direct':changes+' change'+( changes>1?'s':'')}</span>
+        </div>
+        <div style="margin-top:6px">
+          <button onclick="window.open('https://www.bahn.de/buchung/fahrplan/suche#sts=true&so=${encodeURIComponent(from)}&zo=${encodeURIComponent(to)}','_blank')" 
+            style="width:100%;min-height:36px;background:rgba(106,59,199,.3);border:1px solid #6a3bc7;border-radius:6px;color:#b39ddb;font-family:'Pirata One',cursive;font-size:11px;cursor:pointer;letter-spacing:1px">
+            🎫 BOOK ON DB →
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){
+    setDBStatus(false,'Search failed — opening HVV instead');
+    results.innerHTML=`<div class="train-loading" style="color:#b39ddb">
+      <div style="margin-bottom:8px">⚠️ Live search unavailable.<br>Opening HVV planner for you...</div>
+      <button class="train-btn" onclick="openHVVSearch()">🌐 Open HVV Site</button>
+    </div>`;
+    setTimeout(()=>openHVVSearch(from,to),1500);
+  }
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function setDBStatus(online,msg){
+  document.getElementById('dbDot').className='db-dot'+(online?'':' offline');
+  document.getElementById('dbStatusTxt').textContent=msg;
+}
+function openHVVSearch(from='',to=''){
+  const f=encodeURIComponent(from||document.getElementById('trainFrom')?.value||'');
+  const t=encodeURIComponent(to||document.getElementById('trainTo')?.value||'');
+  window.open(`https://hvv.de/de/fahrplan?start=${f}&ziel=${t}`,'_blank');
+}
+function openHVVFull(){window.open('https://hvv.de/de/fahrplan','_blank');}
+function openDBFull(){window.open('https://www.bahn.de/','_blank');}
+
+// ── TODAY CARD ────────────────────────────────────────────────────────────
+function renderToday(){
+  const te=S.expenses.filter(e=>getDK(new Date(e.date))===todayKey);
+  const tot=te.reduce((s,e)=>s+e.amount,0);
+  const now=new Date();
+  document.getElementById('tcDate').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('tcCount').textContent=`${te.length} entr${te.length===1?'y':'ies'} today`;
+  document.getElementById('tcAmt').textContent=fmt(tot);
+}
+
+// ── POSTER ────────────────────────────────────────────────────────────────
+function renderPoster(){
+  document.getElementById('avDisp').textContent=S.avatar;
+  document.getElementById('pName').textContent=S.pirateName;
+  document.getElementById('pTitle').textContent=S.pirateTitle;
+  document.getElementById('bAmt').textContent=fmt(S.bounty);
+  const statusIdx=Math.min(Math.floor(S.bounty/100000000),STATUSES.length-1);
+  document.getElementById('pirateStatus').textContent=STATUSES[statusIdx];
+  if(S.showEuro){
+    document.getElementById('euroEquiv').textContent='฿'+S.bounty.toLocaleString()+' Berries';
+  } else {
+    document.getElementById('euroEquiv').textContent='';
+  }
+}
+
+// ── BUDGET ────────────────────────────────────────────────────────────────
+function totalSpent(){return S.expenses.reduce((s,e)=>s+e.amount,0);}
+function renderBudget(){
+  const spent=totalSpent(),bud=S.budget||1,pct=Math.min((spent/bud)*100,100),danger=pct>=80;
+  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('pfill').className='pfill'+(danger?' danger':'');
+  document.getElementById('chestAmt').textContent=`฿${spent.toLocaleString()} / ฿${S.budget.toLocaleString()}`;
+  document.getElementById('bcall').className='bcall'+(danger?' show':'');
+  document.getElementById('budgetInp').value=S.budget;
+}
+function setBudget(){
+  const v=parseFloat(document.getElementById('budgetInp').value);
+  if(!isNaN(v)&&v>0){S.budget=v;persist();renderBudget();}
+}
+
+// ── DAY TABS ──────────────────────────────────────────────────────────────
+let activeFilter='all';
+function buildDayTabs(){
+  const tabs=document.getElementById('dtabs');
+  const days=[...new Set(S.expenses.map(e=>getDK(new Date(e.date))))].sort().reverse();
+  tabs.innerHTML='<button class="dtab'+(activeFilter==='all'?' active':'')+'" onclick="setFilter(\'all\')">📅 All Week</button>'
+    +days.map(dk=>`<button class="dtab${activeFilter===dk?' active':''}" onclick="setFilter('${dk}')">${fmtDay(dk)}</button>`).join('');
+}
+function setFilter(f){activeFilter=f;buildDayTabs();renderManifest();}
+
+// ── MANIFEST ──────────────────────────────────────────────────────────────
+let manifestOpen=false;
+function toggleManifest(){
+  manifestOpen=!manifestOpen;
+  document.getElementById('mlist').className='mlist'+(manifestOpen?' open':'');
+  document.getElementById('mchev').textContent=manifestOpen?'▲':'▼';
+}
+function renderManifest(){
+  const list=document.getElementById('mlist'),empty=document.getElementById('mempty');
+  document.getElementById('mcount').textContent=S.expenses.length;
+  let filtered=activeFilter==='all'?[...S.expenses]:S.expenses.filter(e=>getDK(new Date(e.date))===activeFilter);
+  filtered.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  [...list.querySelectorAll('.mi,.dgh,.dgs')].forEach(el=>el.remove());
+  if(!filtered.length){empty.style.display='block';return;}
+  empty.style.display='none';
+  const groups={};
+  filtered.forEach(e=>{const dk=getDK(new Date(e.date));if(!groups[dk])groups[dk]=[];groups[dk].push(e);});
+  Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(dk=>{
+    const items=groups[dk],tot=items.reduce((s,e)=>s+e.amount,0);
+    const h=document.createElement('div');h.className='dgh';
+    h.innerHTML=`<span class="dgt">📅 ${fmtDay(dk)}</span><span class="dgv">฿${tot.toLocaleString()}</span>`;
+    list.appendChild(h);
+    items.forEach(e=>{
+      const el=document.createElement('div');el.className='mi';
+      el.innerHTML=`<div class="mil"><span class="min">${CAT_EMOJI[e.category]||'📦'} ${e.name}</span>
+        <span class="mic">${e.category} · ${fmtTime(e.date)}</span></div>
+        <span class="mia">฿${e.amount.toLocaleString()}</span>
+        <button class="mdel" onclick="delExp('${e.id}')">🗑️</button>`;
+      list.appendChild(el);
+    });
+    const sp=document.createElement('div');sp.className='dgs';sp.style.height='8px';list.appendChild(sp);
+  });
+}
+function addExpense(){
+  const name=document.getElementById('eName').value.trim();
+  const amt=parseFloat(document.getElementById('eAmt').value);
+  const cat=document.getElementById('eCat').value;
+  if(!name||isNaN(amt)||amt<=0){shake(document.getElementById('eName'));return;}
+  S.expenses.push({id:Date.now().toString(),name,amount:amt,category:cat,date:new Date().toISOString()});
+  document.getElementById('eName').value='';document.getElementById('eAmt').value='';
+  persist();activeFilter='all';buildDayTabs();renderManifest();renderBudget();renderToday();renderPoster();
+  flash(document.getElementById('addExpBtn'));
+  if(!manifestOpen)toggleManifest();
+}
+function delExp(id){S.expenses=S.expenses.filter(e=>e.id!==id);persist();buildDayTabs();renderManifest();renderBudget();renderToday();}
+
+// ── RECURRING ─────────────────────────────────────────────────────────────
+function renderRecurring(){
+  const list=document.getElementById('recurList');
+  list.innerHTML=S.recurring.map(r=>`<div class="recur-item">
+    <div><div class="recur-name">📌 ${r.name}</div></div>
+    <span class="recur-amt">€${r.amount.toFixed(2)}/mo</span>
+    <button class="mdel" onclick="delRecur('${r.id}')">🗑️</button>
+  </div>`).join('')||'<div class="mempty">No recurring costs yet!</div>';
+  const tot=S.recurring.reduce((s,r)=>s+r.amount,0);
+  document.getElementById('recurTotal').textContent='€'+tot.toFixed(2);
+}
+function addRecurring(){
+  const name=document.getElementById('recurName').value.trim();
+  const amt=parseFloat(document.getElementById('recurAmt').value);
+  if(!name||isNaN(amt)||amt<=0)return;
+  S.recurring.push({id:'rc'+Date.now(),name,amount:amt});
+  document.getElementById('recurName').value='';document.getElementById('recurAmt').value='';
+  persist();renderRecurring();
+}
+function delRecur(id){S.recurring=S.recurring.filter(r=>r.id!==id);persist();renderRecurring();}
+
+// ── MEAL PLANNER ──────────────────────────────────────────────────────────
+let editingMealSlot=null;
+function renderMeals(){
+  const grid=document.getElementById('mealGrid');
+  grid.innerHTML=MEAL_SLOTS.map((label,i)=>{
+    const m=S.meals[i];
+    return`<div class="meal-slot ${m?'filled':''}" onclick="openMealModal(${i})">
+      <div class="meal-label">${label}</div>
+      ${m?`<div class="meal-name">${m.name}</div><div class="meal-cost">€${m.cost.toFixed(2)}</div>`
+        :`<div class="meal-empty">Tap to plan...</div>`}
+    </div>`;
+  }).join('');
+  const tot=Object.values(S.meals).filter(Boolean).reduce((s,m)=>s+m.cost,0);
+  document.getElementById('mealCost').textContent=S.showEuro?'€'+tot.toFixed(2):'฿'+(tot*1000000).toLocaleString();
+}
+function openMealModal(slot){
+  editingMealSlot=slot;
+  document.getElementById('mealModalTitle').textContent='🍜 Plan: '+MEAL_SLOTS[slot];
+  document.getElementById('mealCustomName').value='';
+  document.getElementById('mealCustomCost').value='';
+  const presets=document.getElementById('mealPresets');
+  presets.innerHTML=HAMBURG_MEALS.map(m=>`<button class="meal-preset" onclick="selectMealPreset('${m.n}',${m.c})">
+    <div style="font-size:11px;color:var(--inkl)">€${m.c.toFixed(2)}</div>
+    <div style="font-family:'IM Fell English',serif;font-size:13px;color:var(--ink)">${m.n}</div>
+  </button>`).join('');
+  document.getElementById('mealModal').className='mover open';
+}
+function selectMealPreset(name,cost){
+  document.getElementById('mealCustomName').value=name;
+  document.getElementById('mealCustomCost').value=cost;
+}
+function saveMeal(){
+  const name=document.getElementById('mealCustomName').value.trim();
+  const cost=parseFloat(document.getElementById('mealCustomCost').value);
+  if(!name)return;
+  S.meals[editingMealSlot]={name,cost:isNaN(cost)?0:cost};
+  persist();renderMeals();closeMod('mealModal');
+}
+
+// ── STUDY ─────────────────────────────────────────────────────────────────
+function daysUntil(dateStr){
+  const d=new Date(dateStr),now=new Date();
+  now.setHours(0,0,0,0);d.setHours(0,0,0,0);
+  return Math.round((d-now)/(1000*60*60*24));
+}
+function renderStudy(){
+  const list=document.getElementById('studyList');
+  const sorted=[...S.studyItems].sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
+  list.innerHTML=sorted.map(s=>{
+    const days=daysUntil(s.dueDate);
+    const cls=days<=2?'urgent':days<=7?'soon':'ok';
+    const dayStr=days<0?'OVERDUE':days===0?'TODAY!':days===1?'Tomorrow':`${days} days`;
+    return`<div class="study-item">
+      <div class="study-status ${cls}"></div>
+      <div class="study-info"><div class="study-name">${s.name}</div>
+      <div class="study-due">${new Date(s.dueDate+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div></div>
+      <div style="text-align:right">
+        <div class="study-days ${cls}">${dayStr}</div>
+        <button onclick="delStudy('${s.id}')" style="background:none;border:none;color:var(--ps);font-size:13px;cursor:pointer;padding:2px 4px">🗑️</button>
+      </div>
+    </div>`;
+  }).join('')||'<div class="mempty">No intel filed yet, Captain!</div>';
+}
+function addStudy(){
+  const name=document.getElementById('studyName').value.trim();
+  const date=document.getElementById('studyDate').value;
+  if(!name||!date)return;
+  S.studyItems.push({id:'s'+Date.now(),name,dueDate:date});
+  document.getElementById('studyName').value='';document.getElementById('studyDate').value='';
+  persist();renderStudy();
+}
+function delStudy(id){S.studyItems=S.studyItems.filter(s=>s.id!==id);persist();renderStudy();}
+
+// ── SLEEP ─────────────────────────────────────────────────────────────────
+function hakiFromSleep(h){return h?Math.min(Math.round((h/9)*100),100):0;}
+function sleepMsg(h){
+  if(!h)return'Log your sleep to power up your Haki!';
+  if(h<5)return'⚠️ Critical rest failure! Haki severely weakened!';
+  if(h<6)return'😴 Poor rest — Haki at 50%. Train harder tomorrow.';
+  if(h<7)return'😐 Acceptable rest. Haki recovering...';
+  if(h<8)return'💪 Good rest! Haki flowing strong!';
+  return'⚡ FULL HAKI POWER! 9+ hours — Conqueror\'s Haki activated!';
+}
+function renderSleep(){
+  const h=S.sleepHours;
+  const haki=hakiFromSleep(h);
+  document.getElementById('sleepHours').textContent=h?h+' hrs':'-- hrs';
+  document.getElementById('hakiPct').textContent=haki+'%';
+  document.getElementById('hakiFill').style.width=haki+'%';
+  document.getElementById('sleepMsg').textContent=sleepMsg(h);
+  const btns=document.getElementById('sleepBtns');
+  btns.innerHTML=SLEEP_OPTIONS.map(n=>`<button class="sleep-btn ${S.sleepHours===n?'active':''}" onclick="setSleep(${n})">${n}h</button>`).join('');
+}
+function setSleep(h){S.sleepHours=h;persist();renderSleep();}
+
+// ── WORKOUT ───────────────────────────────────────────────────────────────
+function renderWorkout(){
+  const done=S.workouts.filter(w=>w.done).length;
+  const pct=S.workouts.length?Math.round((done/S.workouts.length)*100):0;
+  document.getElementById('workoutList').innerHTML=S.workouts.map(w=>`<div class="workout-item">
+    <button class="wo-check ${w.done?'done':''}" onclick="toggleWorkout('${w.id}',event)">${w.done?'✓':w.name.slice(0,1)}</button>
+    <div><div class="wo-name ${w.done?'done':''}">${w.name}</div></div>
+    <button onclick="delWorkout('${w.id}')" style="background:none;border:none;color:var(--ps);font-size:14px;cursor:pointer;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center">🗑️</button>
+  </div>`).join('');
+  document.getElementById('staminaFill').style.width=pct+'%';
+  document.getElementById('workoutPct').textContent=pct+'%';
+}
+function toggleWorkout(id,event){
+  const w=S.workouts.find(x=>x.id===id);if(!w||w.done)return;
+  w.done=true;S.bounty+=5000000;persist();renderWorkout();renderPoster();spawnCoin(event);
+}
+function addWorkout(){
+  const n=document.getElementById('woName').value.trim();if(!n)return;
+  S.workouts.push({id:'w'+Date.now(),name:n,done:false});
+  document.getElementById('woName').value='';persist();renderWorkout();
+}
+function delWorkout(id){S.workouts=S.workouts.filter(w=>w.id!==id);persist();renderWorkout();}
+
+// ── GOALS ─────────────────────────────────────────────────────────────────
+function renderGoals(){
+  document.getElementById('goalsList').innerHTML=S.goals.map(g=>`<div class="goal-item">
+    <button class="goal-check ${g.done?'done':''}" onclick="toggleGoal('${g.id}',event)">${g.done?'✓':''}</button>
+    <div class="goal-info"><div class="goal-name ${g.done?'done':''}">${g.name}</div>
+    <div class="goal-reward">+฿${(g.reward||20000000).toLocaleString()} bounty</div></div>
+    <button onclick="delGoal('${g.id}')" style="background:none;border:none;color:var(--ps);font-size:14px;cursor:pointer;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center">🗑️</button>
+  </div>`).join('');
+}
+function toggleGoal(id,event){
+  const g=S.goals.find(x=>x.id===id);if(!g||g.done)return;
+  g.done=true;S.bounty+=(g.reward||20000000);persist();renderGoals();renderPoster();spawnCoin(event);
+}
+function addGoal(){
+  const n=document.getElementById('goalName').value.trim();if(!n)return;
+  S.goals.push({id:'g'+Date.now(),name:n,done:false,reward:25000000});
+  document.getElementById('goalName').value='';persist();renderGoals();
+}
+function delGoal(id){S.goals=S.goals.filter(g=>g.id!==id);persist();renderGoals();}
+
+// ── ROUTINES ──────────────────────────────────────────────────────────────
+function renderRoutines(){
+  document.getElementById('routineList').innerHTML=S.routines.map(r=>`<div class="ri">
+    <button class="rck ${r.done?'done':''}" onclick="toggleRoutine('${r.id}',event)">${r.done?'':'<span style="font-size:15px">'+r.name.slice(0,1)+'</span>'}</button>
+    <div class="rinfo"><div class="rname ${r.done?'done':''}">${r.name}</div>
+    <div class="rrew">+฿10,000,000 bounty</div></div>
+    <button onclick="delRoutine('${r.id}')" style="background:none;border:none;color:var(--ps);font-size:14px;cursor:pointer;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center">🗑️</button>
+  </div>`).join('');
+  document.getElementById('stcnt').textContent=S.streak;
+}
+function toggleRoutine(id,event){
+  const r=S.routines.find(x=>x.id===id);if(!r||r.done)return;
+  r.done=true;S.bounty+=10000000;persist();renderRoutines();renderPoster();spawnCoin(event);
+  if(S.routines.every(x=>x.done)){S.streak++;S.lastStreakDate=todayKey;sv('streak',S.streak);sv('lastStreakDate',todayKey);document.getElementById('stcnt').textContent=S.streak;}
+}
+function addRoutine(){
+  const n=document.getElementById('newRout').value.trim();if(!n)return;
+  S.routines.push({id:'r'+Date.now(),name:n,done:false});
+  document.getElementById('newRout').value='';persist();renderRoutines();
+}
+function delRoutine(id){S.routines=S.routines.filter(r=>r.id!==id);persist();renderRoutines();}
+
+// ── PROFILE MODAL ─────────────────────────────────────────────────────────
+function openProfileModal(){
+  document.getElementById('nameInp').value=S.pirateName;
+  document.getElementById('titleInp').value=S.pirateTitle;
+  const g=document.getElementById('agrid');g.innerHTML='';
+  AVATARS.forEach(a=>{
+    const b=document.createElement('button');b.className='abtn'+(a===S.avatar?' sel':'');b.textContent=a;
+    b.onclick=()=>{g.querySelectorAll('.abtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+    g.appendChild(b);
+  });
+  document.getElementById('profModal').className='mover open';
+}
+function saveProfile(){
+  const n=document.getElementById('nameInp').value.trim();
+  const t=document.getElementById('titleInp').value.trim();
+  const sel=document.querySelector('.abtn.sel');
+  if(n)S.pirateName=n.toUpperCase();if(t)S.pirateTitle=t;if(sel)S.avatar=sel.textContent;
+  persist();renderPoster();closeMod('profModal');
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function closeMod(id){document.getElementById(id).className='mover';}
+function spawnCoin(event){
+  ['💰','🪙','✨'].forEach((c,i)=>{
+    const el=document.createElement('div');el.className='cpop';el.textContent=c;
+    const rect=event.currentTarget.getBoundingClientRect();
+    el.style.left=(rect.left+rect.width/2+(Math.random()-.5)*40)+'px';
+    el.style.top=(rect.top+rect.height/2+(Math.random()-.5)*20)+'px';
+    el.style.animationDelay=(i*.08)+'s';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),900);
+  });
+}
+function flash(el){el.classList.add('sflash');setTimeout(()=>el.classList.remove('sflash'),700);}
+function shake(el){el.style.borderColor='var(--red)';setTimeout(()=>{el.style.borderColor='';},600);}
+
+// Close modals on overlay click
+['profModal','mealModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeMod(id);});
+});
+
+// ── SRH CALENDAR — iCal PARSER ───────────────────────────────────────────
+let calEvents = ld('calEvents', []);
+let calTab = 'today';
+
+// Colour based on event title keywords
+function calEventColor(title) {
+  const t = (title || '').toLowerCase();
+  if (t.includes('lecture') || t.includes('vorlesung') || t.includes('class')) return '#1a5898';
+  if (t.includes('seminar') || t.includes('tutorial') || t.includes('übung')) return '#1a7a3a';
+  if (t.includes('exam') || t.includes('prüfung') || t.includes('test')) return '#D92424';
+  if (t.includes('lab') || t.includes('praktikum')) return '#C9860A';
+  if (t.includes('sport') || t.includes('gym')) return '#5B2D8E';
+  return '#1a5898';
+}
+
+// Parse iCal date strings like 20240915T090000Z or 20240915
+function parseICalDate(str) {
+  if (!str) return null;
+  str = str.replace(/\r/g, '').trim();
+  // Handle VALUE=DATE format (all-day)
+  const allDay = /^\d{8}$/.test(str);
+  if (allDay) {
+    return new Date(
+      parseInt(str.slice(0,4)),
+      parseInt(str.slice(4,6))-1,
+      parseInt(str.slice(6,8))
+    );
+  }
+  // Handle datetime
+  const m = str.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z?)$/);
+  if (m) {
+    if (m[7] === 'Z') {
+      return new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+m[6]));
+    }
+    return new Date(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+m[6]);
+  }
+  return new Date(str);
+}
+
+// Unfold iCal lines (lines can wrap with \r\n + space)
+function unfoldIcal(text) {
+  return text.replace(/\r?\n[ \t]/g, '');
+}
+
+// Main parser
+function parseICS(text) {
+  const unfolded = unfoldIcal(text);
+  const lines = unfolded.split(/\r?\n/);
+  const events = [];
+  let current = null;
+  for (let line of lines) {
+    if (line === 'BEGIN:VEVENT') { current = {}; continue; }
+    if (line === 'END:VEVENT') {
+      if (current && current.start) events.push(current);
+      current = null; continue;
+    }
+    if (!current) continue;
+    // Parse key:value (handle params like DTSTART;TZID=...)
+    const colonIdx = line.indexOf(':');
+    if (colonIdx < 0) continue;
+    const rawKey = line.slice(0, colonIdx).split(';')[0].toUpperCase();
+    const val = line.slice(colonIdx + 1).trim();
+    if (rawKey === 'SUMMARY')   current.title    = val.replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';');
+    if (rawKey === 'DTSTART')   current.start    = parseICalDate(val);
+    if (rawKey === 'DTEND')     current.end      = parseICalDate(val);
+    if (rawKey === 'LOCATION')  current.location = val.replace(/\\,/g,',').replace(/\\n/g,', ');
+    if (rawKey === 'DESCRIPTION') current.desc   = val.replace(/\\n/g,' ').replace(/\\,/g,',').slice(0,120);
+    if (rawKey === 'UID')       current.uid      = val;
+  }
+  // Sort by start date, filter out past events older than 30 days
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 30);
+  return events
+    .filter(e => e.start && e.start > cutoff)
+    .sort((a,b) => a.start - b.start);
+}
+
+function handleCalFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const events = parseICS(e.target.result);
+      if (!events.length) {
+        alert('No events found in this file. Make sure it\'s a valid .ics calendar file!');
+        return;
+      }
+      // Store serialized (dates as ISO strings)
+      calEvents = events.map(ev => ({
+        ...ev,
+        start: ev.start ? ev.start.toISOString() : null,
+        end:   ev.end   ? ev.end.toISOString()   : null,
+      }));
+      sv('calEvents', calEvents);
+      showCalLoaded();
+      renderCalEvents();
+      renderNextClass();
+    } catch(err) {
+      alert('Could not read the file. Make sure it\'s a .ics calendar file!');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function getCalEvents() {
+  // Always return with real Date objects
+  return calEvents.map(e => ({
+    ...e,
+    start: e.start ? new Date(e.start) : null,
+    end:   e.end   ? new Date(e.end)   : null,
+  }));
+}
+
+function showCalLoaded() {
+  document.getElementById('calUploadZone').style.display = 'none';
+  document.getElementById('calLoadedState').style.display = 'block';
+  const evs = getCalEvents();
+  document.getElementById('calLoadedInfo').textContent = '✅ SRH Calendar loaded';
+  document.getElementById('calLoadedCount').textContent = `${evs.length} events found`;
+}
+
+function clearCalendar() {
+  calEvents = [];
+  sv('calEvents', []);
+  document.getElementById('calUploadZone').style.display = 'block';
+  document.getElementById('calLoadedState').style.display = 'none';
+  document.getElementById('calNextClass').classList.remove('show');
+  document.getElementById('calEventList').innerHTML = '';
+}
+
+function switchCalTab(tab, btn) {
+  calTab = tab;
+  document.querySelectorAll('.cal-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCalEvents();
+}
+
+function renderCalEvents() {
+  const list = document.getElementById('calEventList');
+  const evs = getCalEvents();
+  const now = new Date();
+  const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
+  const todayEnd   = new Date(now); todayEnd.setHours(23,59,59,999);
+  const weekEnd    = new Date(now); weekEnd.setDate(weekEnd.getDate() + 7);
+  const upcomingEnd= new Date(now); upcomingEnd.setDate(upcomingEnd.getDate() + 30);
+
+  let filtered = [];
+  if (calTab === 'today')    filtered = evs.filter(e => e.start >= todayStart && e.start <= todayEnd);
+  else if (calTab === 'week')     filtered = evs.filter(e => e.start >= todayStart && e.start <= weekEnd);
+  else if (calTab === 'upcoming') filtered = evs.filter(e => e.start >= todayStart && e.start <= upcomingEnd);
+  else                            filtered = evs.filter(e => e.start >= todayStart);
+
+  if (!filtered.length) {
+    const labels = {today:'today',week:'this week',upcoming:'in the next 30 days',all:'upcoming'};
+    list.innerHTML = `<div class="cal-empty">No classes ${labels[calTab]}, Captain! 🏴‍☠️<br><span style="font-size:11px">Enjoy the freedom of the seas!</span></div>`;
+    return;
+  }
+
+  // Group by date for week/upcoming/all
+  if (calTab === 'today') {
+    list.innerHTML = `<div class="cal-today-header">📅 TODAY'S CLASSES — ${now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>`
+      + filtered.map(e => calEventHTML(e, now)).join('');
+  } else {
+    // Group by day
+    const groups = {};
+    filtered.forEach(e => {
+      const dk = e.start.toDateString();
+      if (!groups[dk]) groups[dk] = [];
+      groups[dk].push(e);
+    });
+    list.innerHTML = Object.entries(groups).map(([dk, evList]) => {
+      const d = new Date(dk);
+      const isToday = d.toDateString() === now.toDateString();
+      const isTomorrow = d.toDateString() === new Date(now.getTime()+86400000).toDateString();
+      const label = isToday ? '📅 TODAY' : isTomorrow ? '📅 TOMORROW' : '📅 '+d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});
+      return `<div class="cal-week-day">${label}</div>`
+        + evList.map(e => calEventHTML(e, now)).join('');
+    }).join('');
+  }
+}
+
+function calEventHTML(e, now) {
+  const color = calEventColor(e.title);
+  const startTime = e.start.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  const endTime   = e.end ? e.end.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}) : '';
+  const dayLabel  = e.start.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+  const minsAway  = Math.round((e.start - now) / 60000);
+  let countdownHTML = '';
+  if (minsAway <= 0 && minsAway > -120) {
+    countdownHTML = `<div class="cal-event-countdown today">IN PROGRESS</div>`;
+  } else if (minsAway > 0 && minsAway <= 60) {
+    countdownHTML = `<div class="cal-event-countdown today">In ${minsAway} min ⚡</div>`;
+  } else if (minsAway > 60 && minsAway <= 1440) {
+    const hrs = Math.round(minsAway/60);
+    countdownHTML = `<div class="cal-event-countdown tomorrow">In ${hrs}h</div>`;
+  } else if (minsAway > 1440) {
+    const days = Math.round(minsAway/1440);
+    countdownHTML = `<div class="cal-event-countdown soon">In ${days}d</div>`;
+  }
+  return `<div class="cal-event">
+    <div class="cal-event-dot" style="background:${color}"></div>
+    <div class="cal-event-info">
+      <div class="cal-event-title">${e.title||'Untitled Event'}</div>
+      <div class="cal-event-time">⏰ ${startTime}${endTime?' – '+endTime:''}</div>
+      ${e.location?`<div class="cal-event-loc">📍 ${e.location}</div>`:''}
+    </div>
+    <div class="cal-event-right">
+      <div class="cal-event-day">${dayLabel}</div>
+      ${countdownHTML}
+    </div>
+  </div>`;
+}
+
+// Next class banner at the top
+function renderNextClass() {
+  const evs = getCalEvents();
+  const now = new Date();
+  const next = evs.find(e => e.start > now || (e.end && e.end > now));
+  const banner = document.getElementById('calNextClass');
+  if (!next) { banner.classList.remove('show'); return; }
+  banner.classList.add('show');
+  document.getElementById('calNextTitle').textContent = next.title || 'Class';
+  const startTime = next.start.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  const endTime   = next.end ? next.end.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}) : '';
+  const isToday   = next.start.toDateString() === now.toDateString();
+  const dayStr    = isToday ? 'Today' : next.start.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});
+  document.getElementById('calNextTime').textContent = `${dayStr} · ${startTime}${endTime?' – '+endTime:''}`;
+  const minsAway = Math.round((next.start - now)/60000);
+  let badge = '';
+  if (minsAway <= 0)         badge = '⚡ NOW';
+  else if (minsAway < 60)    badge = `⚡ ${minsAway}min`;
+  else if (minsAway < 1440)  badge = `⏰ ${Math.round(minsAway/60)}h`;
+  else                       badge = `📅 ${Math.round(minsAway/1440)}d`;
+  document.getElementById('calNextBadge').textContent = badge;
+}
+
+// Init calendar on load
+function initCalendar() {
+  if (calEvents.length) {
+    showCalLoaded();
+    renderCalEvents();
+    renderNextClass();
+  }
+  // Drag and drop support
+  const zone = document.getElementById('calDropZone');
+  if (zone) {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) handleCalFile(file);
+    });
+  }
+}
+function renderAll(){
+  renderLogPose();renderPoster();renderBudget();renderToday();
+  buildDayTabs();renderManifest();renderRecurring();renderMeals();
+  renderStudy();renderSleep();renderWorkout();renderGoals();renderRoutines();
+}
+renderAll();
+fetchWeather();
+// Init train section
+initSearchDefaults();
+refreshLiveBoard();
+// Refresh live board every 60 seconds
+setInterval(()=>{ if(activeTrainTab==='live') refreshLiveBoard(); }, 60*1000);
+// Init SRH calendar
+initCalendar();
+// Refresh next class badge every minute
+setInterval(renderNextClass, 60*1000);
+</script>
+</body>
+</html>
