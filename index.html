@@ -888,18 +888,26 @@ const fmtEuro=(eur)=>S.showEuro?'฿'+(eur/EUR_PER_BERRY/1000000).toLocaleString
 
 // ── SECTION TOGGLE ────────────────────────────────────────────────────────
 function toggleSec(id,btn){
-  const body=document.getElementById(id);
-  body.classList.toggle('collapsed');
-  const arrow=btn.querySelector('span:last-child');
-  arrow.textContent=body.classList.contains('collapsed')?'▶':'▼';
+  try{
+    const body=document.getElementById(id);
+    if(!body)return;
+    body.classList.toggle('collapsed');
+    const collapsed=body.classList.contains('collapsed');
+    // find last span inside btn
+    const spans=btn.querySelectorAll('span');
+    const arrow=spans[spans.length-1];
+    if(arrow)arrow.textContent=collapsed?'▶':'▼';
+  }catch(e){console.warn('toggleSec error',e);}
 }
 
 // ── LOG POSE ──────────────────────────────────────────────────────────────
 function renderLogPose(){
   const bar=document.getElementById('logpose');
   const ti=(new Date().getDay()+6)%7;
-  bar.innerHTML=DAYS.map((d,i)=>`<div class="island ${i===ti?'active':i<ti?'past''}">
-    <span class="isle">${ISLANDS[i]}</span><span class="ilabel">${d}</span></div>`).join('');
+  bar.innerHTML=DAYS.map((d,i)=>{
+    const cls=i===ti?'active':i<ti?'past':'';
+    return`<div class="island ${cls}"><span class="isle">${ISLANDS[i]}</span><span class="ilabel">${d}</span></div>`;
+  }).join('');
 }
 
 // ── WEATHER ───────────────────────────────────────────────────────────────
@@ -1004,38 +1012,41 @@ async function refreshLiveBoard(){
   el.innerHTML='<div class="train-loading"><div class="spinner">🚆</div><br>Fetching departures...</div>';
   setDBStatus(true,'Fetching live departures...');
   try{
-    // Deutsche Bahn open API (v6) — free, no key needed
-    const url=`https://v6.db.transport.rest/stops/${activeLiveStation.id}/departures?duration=60&results=8&language=en`;
-    const res=await fetch(url);
-    if(!res.ok)throw new Error('API error '+res.status);
+    // Deutsche Bahn REST API - free public API
+    const url=`https://v6.db.transport.rest/stops/${activeLiveStation.id}/departures?duration=60&results=8`;
+    const res=await fetch(url,{headers:{'Accept':'application/json'}});
+    if(!res.ok)throw new Error('API '+res.status);
     const data=await res.json();
-    const deps=data.departures||[];
-    if(!deps.length){el.innerHTML='<div class="train-loading">No departures found — try another station!</div>';return;}
-    setDBStatus(true,'🟢 Live — DB API connected');
-    el.innerHTML=deps.map(d=>{
+    const deps=(data.departures||data||[]);
+    if(!deps.length)throw new Error('No departures');
+    setDBStatus(true,'🟢 Live — DB connected');
+    el.innerHTML=deps.slice(0,8).map(d=>{
       const line=d.line||{};
       const color=getLineColor(line.name||'');
-      const planned=new Date(d.plannedWhen||d.when);
-      const actual=new Date(d.when||d.plannedWhen);
+      const when=d.when||d.plannedWhen;
+      if(!when)return'';
+      const planned=new Date(d.plannedWhen||when);
+      const actual=new Date(when);
       const delay=d.delay?Math.round(d.delay/60):0;
       const minsAway=Math.round((actual-new Date())/60000);
-      const countdown=minsAway<=0?'NOW':minsAway===1?'1 min':minsAway+' min';
+      const countdown=minsAway<=0?'NOW':minsAway+' min';
       const countdownCls=minsAway<=0?'now':minsAway<=5?'soon':'later';
       const platform=d.plannedPlatform||d.platform||'';
       return`<div class="train-result-item">
         <div class="tr-top">
           <span class="tr-line-badge" style="background:${color};color:#fff">${line.name||'?'}</span>
-          <span class="tr-direction">${d.direction||'Unknown'}</span>
-          <span class="tr-dep-time">${planned.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}${delay>0?`<span class="tr-delay">+${delay}'</span>`:''}</span>
+          <span class="tr-direction">${d.direction||'—'}</span>
+          <span class="tr-dep-time">${planned.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}${delay>0?'<span class="tr-delay">+'+delay+'\'</span>':''}</span>
         </div>
         <div class="tr-bottom">
-          <span class="tr-platform">${platform?'Platform '+platform:''} · ${line.mode||''}</span>
+          <span class="tr-platform">${platform?'Pl. '+platform:line.mode||''}</span>
           <span class="tr-countdown ${countdownCls}">${countdown}</span>
         </div>
       </div>`;
-    }).join('');
+    }).filter(Boolean).join('');
   }catch(err){
-    setDBStatus(false,'DB API unavailable — showing estimated times');
+    console.warn('Live board error:',err);
+    setDBStatus(false,'Showing estimated times');
     renderFallbackBoard();
   }
 }
@@ -1077,65 +1088,89 @@ async function searchTrains(){
   const date=document.getElementById('trainDate').value;
   const time=document.getElementById('trainTime').value;
   if(!from||!to){
-    document.getElementById('searchResults').innerHTML='<div class="train-loading" style="color:var(--red)">⚠️ Enter FROM and TO stations first!</div>';
+    document.getElementById('searchResults').innerHTML=
+      '<div class="train-loading" style="color:var(--red)">⚠️ Enter FROM and TO stations!</div>';
     return;
   }
   const results=document.getElementById('searchResults');
   results.innerHTML='<div class="train-loading"><div class="spinner">🔍</div><br>Searching routes...</div>';
   setDBStatus(true,'Searching routes...');
   try{
-    // Step 1: resolve station IDs
-    const [fromRes,toRes]=await Promise.all([
-      fetch(`https://v6.db.transport.rest/locations?query=${encodeURIComponent(from)}&results=1`).then(r=>r.json()),
-      fetch(`https://v6.db.transport.rest/locations?query=${encodeURIComponent(to)}&results=1`).then(r=>r.json()),
+    // Resolve station names to IDs
+    const [fRes,tRes]=await Promise.all([
+      fetch(`https://v6.db.transport.rest/locations?query=${encodeURIComponent(from)}&results=1&stops=true`).then(r=>r.json()),
+      fetch(`https://v6.db.transport.rest/locations?query=${encodeURIComponent(to)}&results=1&stops=true`).then(r=>r.json()),
     ]);
-    if(!fromRes.length||!toRes.length)throw new Error('Station not found');
-    const fromId=fromRes[0].id, toId=toRes[0].id;
-    const fromName=fromRes[0].name, toName=toRes[0].name;
-    // Step 2: get journeys
-    const dt=date&&time?`${date}T${time}:00`:new Date().toISOString();
-    const jRes=await fetch(`https://v6.db.transport.rest/journeys?from=${fromId}&to=${toId}&departure=${encodeURIComponent(dt)}&results=5&language=en`);
+    if(!fRes||!fRes.length)throw new Error('From station not found: '+from);
+    if(!tRes||!tRes.length)throw new Error('To station not found: '+to);
+    const fromId=fRes[0].id, toId=tRes[0].id;
+    const fromName=fRes[0].name, toName=tRes[0].name;
+    // Build departure datetime
+    const dt=(date&&time)?`${date}T${time}:00`:new Date().toISOString().slice(0,16)+':00';
+    const jRes=await fetch(
+      `https://v6.db.transport.rest/journeys?from=${encodeURIComponent(fromId)}&to=${encodeURIComponent(toId)}&departure=${encodeURIComponent(dt)}&results=5`
+    );
+    if(!jRes.ok)throw new Error('Journey API error '+jRes.status);
     const jData=await jRes.json();
-    const journeys=jData.journeys||[];
+    const journeys=(jData.journeys||[]);
     if(!journeys.length)throw new Error('No journeys found');
-    setDBStatus(true,'🟢 Live — Routes found');
-    results.innerHTML=`<div style="font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;margin-bottom:8px">📍 ${fromName} → ${toName}</div>`
-    +journeys.map(j=>{
-      const legs=j.legs||[];
-      const dep=new Date(legs[0]?.plannedDeparture||legs[0]?.departure);
-      const arr=new Date(legs[legs.length-1]?.plannedArrival||legs[legs.length-1]?.arrival);
-      const dur=Math.round((arr-dep)/60000);
-      const changes=legs.filter(l=>l.line).length-1;
-      const lines=legs.filter(l=>l.line).map(l=>l.line?.name).filter(Boolean);
-      const price=j.price?`€${(j.price.amount/100).toFixed(2)}`:'';
-      return`<div class="train-result-item">
-        <div class="tr-top">
-          <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
-            ${lines.map(l=>`<span class="tr-line-badge" style="background:${getLineColor(l)};color:#fff">${l}</span>`).join('<span style="color:#b39ddb;font-size:10px;align-self:center">→</span>')}
+    setDBStatus(true,'🟢 Routes found!');
+    results.innerHTML=
+      `<div style="font-family:'Pirata One',cursive;font-size:11px;color:#b39ddb;margin-bottom:8px;letter-spacing:1px">
+        📍 ${fromName} → ${toName}
+      </div>`
+      +journeys.map(j=>{
+        const legs=(j.legs||[]).filter(l=>l.line||l.walking);
+        if(!legs.length)return'';
+        const firstLeg=legs[0];
+        const lastLeg=legs[legs.length-1];
+        const dep=new Date(firstLeg.plannedDeparture||firstLeg.departure);
+        const arr=new Date(lastLeg.plannedArrival||lastLeg.arrival);
+        const dur=Math.round((arr-dep)/60000);
+        const trainLegs=legs.filter(l=>l.line);
+        const changes=Math.max(0,trainLegs.length-1);
+        const lineNames=trainLegs.map(l=>l.line?.name).filter(Boolean);
+        const price=j.price?`€${(j.price.amount/100).toFixed(2)}`:'';
+        const dbUrl=`https://www.bahn.de/buchung/fahrplan/suche#sts=true&so=${encodeURIComponent(from)}&zo=${encodeURIComponent(to)}`;
+        return`<div class="train-result-item">
+          <div class="tr-top">
+            <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1;align-items:center">
+              ${lineNames.map((l,i)=>`
+                ${i>0?'<span style="color:#b39ddb;font-size:10px">→</span>':''}
+                <span class="tr-line-badge" style="background:${getLineColor(l)};color:#fff">${l}</span>
+              `).join('')}
+            </div>
+            ${price?`<span style="font-family:'Pirata One',cursive;font-size:13px;color:var(--goldl)">${price}</span>`:''}
           </div>
-          ${price?`<span style="font-family:'Pirata One',cursive;font-size:13px;color:var(--goldl)">${price}</span>`:''}
-        </div>
-        <div class="tr-bottom" style="margin-top:4px">
-          <span style="font-family:'Pirata One',cursive;font-size:13px;color:#f5c842">
-            ${dep.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} → ${arr.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}
-          </span>
-          <span class="tr-platform">${dur} min · ${changes===0?'Direct':changes+' change'+( changes>1?'s':'')}</span>
-        </div>
-        <div style="margin-top:6px">
-          <button onclick="window.open('https://www.bahn.de/buchung/fahrplan/suche#sts=true&so=${encodeURIComponent(from)}&zo=${encodeURIComponent(to)}','_blank')" 
-            style="width:100%;min-height:36px;background:rgba(106,59,199,.3);border:1px solid #6a3bc7;border-radius:6px;color:#b39ddb;font-family:'Pirata One',cursive;font-size:11px;cursor:pointer;letter-spacing:1px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+            <span style="font-family:'Pirata One',cursive;font-size:14px;color:#f5c842">
+              ${dep.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}
+              → 
+              ${arr.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}
+            </span>
+            <span class="tr-platform">${dur}min · ${changes===0?'Direct':changes+' change'+(changes>1?'s':'')}</span>
+          </div>
+          <button onclick="window.open('${dbUrl}','_blank')"
+            style="width:100%;min-height:40px;margin-top:8px;background:rgba(106,59,199,.3);border:1px solid #6a3bc7;
+                   border-radius:6px;color:#b39ddb;font-family:'Pirata One',cursive;font-size:11px;
+                   cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">
             🎫 BOOK ON DB →
           </button>
-        </div>
-      </div>`;
-    }).join('');
+        </div>`;
+      }).filter(Boolean).join('');
   }catch(err){
-    setDBStatus(false,'Search failed — opening HVV instead');
-    results.innerHTML=`<div class="train-loading" style="color:#b39ddb">
-      <div style="margin-bottom:8px">⚠️ Live search unavailable.<br>Opening HVV planner for you...</div>
-      <button class="train-btn" onclick="openHVVSearch()">🌐 Open HVV Site</button>
+    console.warn('Search error:',err);
+    setDBStatus(false,'API unavailable');
+    const from2=document.getElementById('trainFrom').value.trim();
+    const to2=document.getElementById('trainTo').value.trim();
+    results.innerHTML=`<div class="train-loading">
+      <div style="margin-bottom:12px;color:#b39ddb">⚠️ ${err.message||'Search failed'}<br>
+      <span style="font-size:11px">Opening HVV & DB for manual search...</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="train-btn" onclick="window.open('https://hvv.de/de/fahrplan','_blank')">🚇 HVV Planner</button>
+        <button class="train-btn" onclick="window.open('https://www.bahn.de/','_blank')">🚆 DB Website</button>
+      </div>
     </div>`;
-    setTimeout(()=>openHVVSearch(from,to),1500);
   }
 }
 
@@ -1728,17 +1763,17 @@ function renderAll(){
   buildDayTabs();renderManifest();renderRecurring();renderMeals();
   renderStudy();renderSleep();renderWorkout();renderGoals();renderRoutines();
 }
-renderAll();
-fetchWeather();
-// Init train section
-initSearchDefaults();
-refreshLiveBoard();
-// Refresh live board every 60 seconds
-setInterval(()=>{ if(activeTrainTab==='live') refreshLiveBoard(); }, 60*1000);
-// Init SRH calendar
-initCalendar();
-// Refresh next class badge every minute
-setInterval(renderNextClass, 60*1000);
+
+// ── BOOT — wrap in DOMContentLoaded so iPhone Safari is fully ready ───────
+document.addEventListener('DOMContentLoaded',function(){
+  renderAll();
+  fetchWeather();
+  initSearchDefaults();
+  refreshLiveBoard();
+  setInterval(()=>{ if(activeTrainTab==='live') refreshLiveBoard(); }, 60*1000);
+  initCalendar();
+  setInterval(renderNextClass, 60*1000);
+});
 </script>
 </body>
 </html>
